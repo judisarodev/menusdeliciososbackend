@@ -1,6 +1,6 @@
 import { DishRepositoryImplementation } from "../infraestructure/dishRepositoryImplementation";
 
-export class GetAllDishes {
+export class GetAllDishesUseCase {
 
     dishRepositoryImplementation: DishRepositoryImplementation = new DishRepositoryImplementation();
 
