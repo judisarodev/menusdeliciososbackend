@@ -4,20 +4,20 @@ dotenv.config();
 
 // src/app.ts
 import express, { Request, Response } from 'express';
-import DataBaseSetUp from './infraestructure/config/database';
+import DataBaseSetUp from './infraestructure/config/sequelize';
+import { GetAllDishes } from './modules/dish/application/getAllDishes';
 
 
 const app = express();
 const port = 8000;
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/get-dishes', async (req: Request, res: Response) => {
     try{
-        const db = new DataBaseSetUp();
-        db.setUp();
-        const sequelize = db.getSequelize();
-        await sequelize.authenticate();
+        //sequelize.authenticate();
+        const getAllDishes = new GetAllDishes();
+        const d = await getAllDishes.getAll();
         console.log('Connection has been established successfully.');
-        return res.status(200).json({message: 'success'});
+        return res.status(200).json({message: 'success', d});
     }catch(error){
         console.error('Unable to connect to the database:', error);
         return res.status(500).json({message: 'fail'});
