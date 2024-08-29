@@ -12,7 +12,7 @@ export default class Router {
     }
 
     setUpRoutes(){
-        this.router.use('/product', this.dishRouter.getRouter());
+        this.router.use('/dish', this.dishRouter.getRouter());
     }
 
     getRouter(): any {
