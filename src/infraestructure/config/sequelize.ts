@@ -99,5 +99,31 @@ export default class SequelizeSetUp {
             foreignKey: 'phoneCodeId',
             as: 'phoneCode'
         });
+
+        models.Restaurant.belongsTo(models.Phone, {
+            foreignKey: 'phoneId',
+            as: 'phone'
+        });
+
+        models.Restaurant.belongsTo(models.Address, {
+            foreignKey: 'addressId',
+            as: 'address'
+        });
+
+        models.Restaurant.belongsTo(models.RestaurantType, {
+            foreignKey: 'restaurantTypeId',
+            as: 'restaurantType'
+        });
+
+        models.Category.belongsTo(models.Restaurant, {
+            foreignKey: 'restaurantId',
+            as: 'restaurant'
+        });
+
+        models.Product.belongsTo(models.Category, {
+            foreignKey: 'categoryId',
+            as: 'category'
+        });
+
     }
 }
