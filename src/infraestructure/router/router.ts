@@ -5,6 +5,7 @@ import RouterPattern from './routerPattern';
 import RestaurantTypeRouter from '../../modules/restaurant_type/infraestructure/restaurantTypeRouter';
 import PhoneRouter from '../../modules/phone/infraestructure/phoneRouter';
 import AddressRouter from '../../modules/address/infraestructure/addressRouter';
+import RestaurantRouter from '../../modules/restaurant/infraestructure/restaurantRouter';
 
 export default class Router implements RouterPattern{
     router: any;
@@ -13,6 +14,7 @@ export default class Router implements RouterPattern{
     restaurantTypeRouter: RestaurantTypeRouter;
     phoneRouter: PhoneRouter;
     addressRouter: AddressRouter;
+    restaurantRouter: RestaurantRouter;
     
     constructor(){
         this.router = express.Router();
@@ -21,6 +23,7 @@ export default class Router implements RouterPattern{
         this.restaurantTypeRouter = new RestaurantTypeRouter();
         this.phoneRouter= new PhoneRouter();
         this.addressRouter = new AddressRouter();
+        this.restaurantRouter = new RestaurantRouter();
         this.setUpRoutes();
     }
 
@@ -30,6 +33,8 @@ export default class Router implements RouterPattern{
         this.router.use('/restaurant-type', this.restaurantTypeRouter.getRouter());
         this.router.use('/phone', this.phoneRouter.getRouter());
         this.router.use('/address', this.addressRouter.getRouter());
+        this.router.use('/restaurant', this.restaurantRouter.getRouter());
+
     }
 
     getRouter(): any {
