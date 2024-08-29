@@ -1,4 +1,4 @@
-import PhoneCodeEntity from "../../phone_code/domain/phoneCodeEntity";
+import PhoneCodeEntity from "../../phone_code/phoneCodeEntity";
 
 export default class PhoneEntity {
     private phoneId: number | undefined; 
