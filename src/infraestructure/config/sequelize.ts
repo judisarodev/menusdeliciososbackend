@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { Sequelize } from 'sequelize';
 import ProductModel from './models/productModel';
 import AddressModel from './models/addressModel';
@@ -8,32 +10,32 @@ import RestaurantModel from './models/restaurantModel';
 import CategoryModel from './models/categoryModel';
 
 export default class SequelizeSetUp {
-    dataBase: { name: string, user: string, password: string, host: string } = {
+    static dataBase: { name: string, user: string, password: string, host: string } = {
         name: process.env.DATABASE_NAME || 'database',
         user: process.env.USER || 'root',
         password: process.env.PASSWORD || 'password',
         host: process.env.HOST || 'host',
     }
-    models: any = {};
-    sequelize: any;
+    static models: any = {};
+    static sequelize: any;
  
-    setUp(){
-        this.sequelize = new Sequelize(this.dataBase.name, this.dataBase.user, this.dataBase.password, {
-          host: this.dataBase.host,
-          dialect: 'mysql', 
-        });
-
-        const models = this.setUpModels();
-        this.setUpAssociations(models);
-
-        return models; 
-    }
+    static getModels(){
+        if(!this.sequelize){
+            this.sequelize = new Sequelize(this.dataBase.name, this.dataBase.user, this.dataBase.password, {
+              host: this.dataBase.host,
+              dialect: 'mysql', 
+            });
     
-    getSequelize(){
-        return this.sequelize;
+            const models = this.setUpModels();
+            this.setUpAssociations(models);
+    
+            this.models = models;
+        }
+
+        return this.models;
     }
 
-    setUpModels(){
+    static setUpModels(){
 
         const Address = this.sequelize.define(
             AddressModel.getModelName(),
@@ -88,7 +90,7 @@ export default class SequelizeSetUp {
         };
     }
 
-    setUpAssociations(models: any): void {
+    static setUpAssociations(models: any): void {
         models.Phone.belongsTo(models.PhoneCode, {
             foreignKey: 'phoneCodeId',
             as: 'phoneCode'

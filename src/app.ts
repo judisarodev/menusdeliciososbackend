@@ -1,7 +1,5 @@
-import * as dotenv from 'dotenv';
 import Router from './infraestructure/router/router';
 import express, { Request, Response } from 'express';
-dotenv.config();
 
 const app = express();
 const port = 8000;

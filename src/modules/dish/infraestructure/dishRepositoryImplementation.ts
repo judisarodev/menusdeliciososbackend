@@ -1,14 +1,13 @@
 import { DishEntity } from "../domain/dishEntity";
 import { DishRepository } from "../domain/dishRepository";
-import { getSequelizeInstance } from "../../../infraestructure/config/sequelizeImplementation";
+import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 
 export class DishRepositoryImplementation implements DishRepository{
 
-    sequelize: any = getSequelizeInstance();
+    models: any = SequelizeSetUp.getModels();
 
     async getAll(): Promise<DishEntity> {
-        console.log('this.sequelize.models', this.sequelize.models);
-        return await this.sequelize.models.Product.findAll();
+        return await this.models.Product.findAll();
     }
     create(dish: DishEntity): DishEntity {
         throw new Error("Method not implemented.");
