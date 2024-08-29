@@ -13,9 +13,6 @@ export default class Router {
 
     setUpRoutes(){
         this.router.use('/product', this.dishRouter.getRouter());
-        this.router.get('/say-hi', async (req: any, res: any) => {
-            return res.send('Hi');
-        });
     }
 
     getRouter(): any {
