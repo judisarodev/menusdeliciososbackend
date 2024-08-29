@@ -6,6 +6,6 @@ export default class CreateDishUseCase {
     constructor(private dishRepositoryImplementation: DishRepositoryImplementation){}
 
     async execute(dish: DishEntity){
-        return await this.dishRepositoryImplementation.create(dish);
+        await this.dishRepositoryImplementation.create(dish);
     }
 }

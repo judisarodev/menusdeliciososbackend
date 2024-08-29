@@ -14,8 +14,8 @@ export class DishRepositoryImplementation implements DishRepository{
         return await this.models.Product.findAll();
     }
     
-    async create(dish: DishEntity): Promise<DishEntity> {
-        return await this.models.Product.create(dish);
+    async create(dish: DishEntity) {
+        await this.models.Product.create(dish);
     }
 
     async delete(dishId: number): Promise<DishEntity> {

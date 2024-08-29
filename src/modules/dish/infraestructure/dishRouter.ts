@@ -52,18 +52,12 @@ export default class DishRouter {
 
         this.router.post('/create', async (req: any, res: any) => {
             try{
-                const {
-                    categoryId, 
-                    name, 
-                    price, 
-                    description, 
-                    image
-                } = req.body;
+                const { categoryId, name, price, description, image } = req.body;
 
-                const category = await this.getCategoryByIdUseCase.execute(categoryId);
-                const dish = new DishEntity(category, name, price, description, image);
+                const categoryEntity = await this.getCategoryByIdUseCase.execute(categoryId);
+                const dishEntity = new DishEntity(categoryEntity, name, price, description, image);
 
-                const createdDish = await this.createDishUseCase.execute(dish);
+                const createdDish = await this.createDishUseCase.execute(dishEntity);
                 return res.status(200).json(createdDish);
             }catch(error){
                 console.error(error);
