@@ -50,7 +50,7 @@ export default class PhoneRouter implements RouterPattern {
         });
     }
     getRouter(): Router {
-        throw new Error("Method not implemented.");
+        return this.router;
     }
     
 }
