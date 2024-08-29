@@ -24,4 +24,13 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
         }
         return categoryEntities;
     }
+
+    async create(categoryEntity: CategoryEntity) {
+        await this.models.Category.create({
+            name: categoryEntity.getName(),
+            image: categoryEntity.getImage(),
+            icon: categoryEntity.getIcon(),
+            restaurantId: 1, 
+        });
+    }
 }

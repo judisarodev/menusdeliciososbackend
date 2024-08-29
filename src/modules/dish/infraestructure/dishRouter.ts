@@ -46,7 +46,7 @@ export default class DishRouter {
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);
-                throw error;
+                return res.status(200).json(error);
             }
         });
 
@@ -61,7 +61,7 @@ export default class DishRouter {
                 return res.status(200).json(createdDish);
             }catch(error){
                 console.error(error);
-                throw error;
+                return res.status(200).json(error);
             }
         });
 
@@ -71,7 +71,7 @@ export default class DishRouter {
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);
-                throw error;
+                return res.status(200).json(error);
             }
         });
 
@@ -81,7 +81,7 @@ export default class DishRouter {
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);
-                throw error;
+                return res.status(200).json(error); 
             }
         });
     }

@@ -9,7 +9,7 @@ export default class RestaurantTypeModel {
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
-            allowNull: false,
+            autoIncrement: true,
         },
         name: {
             type: DataTypes.STRING,

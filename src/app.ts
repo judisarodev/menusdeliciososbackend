@@ -5,6 +5,7 @@ const app = express();
 const port = 8000;
 
 const router = new Router();
+app.use(express.json());
 app.use('/api', router.getRouter());
 
 app.listen(port, () => {

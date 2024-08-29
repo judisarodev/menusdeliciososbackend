@@ -16,4 +16,28 @@ export class DishEntity {
         this.image = image;
         this.dishId = dishId;
     }
+
+    getDishId(): number | undefined {
+        return this.dishId;
+    }
+
+    getCategory(): CategoryEntity {
+        return this.category;
+    }
+
+    getName(): string {
+        return this.name;
+    }
+
+    getPrice(): number {
+        return this.price; 
+    }
+
+    getDescription(): string {
+        return this.description; 
+    }
+
+    getImage(): string {
+        return this.image; 
+    }
 }

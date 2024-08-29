@@ -10,7 +10,6 @@ export default class ProductModel {
             field: 'product_id',
             primaryKey: true,
             type: DataTypes.NUMBER,
-            allowNull: false,
             unique: true,
             autoIncrement: true,
         },
