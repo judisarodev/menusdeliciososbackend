@@ -19,17 +19,21 @@ export default class SequelizeSetUp {
     static models: any = {};
     static sequelize: any;
  
+    static setUp(){
+        this.sequelize = new Sequelize(this.dataBase.name, this.dataBase.user, this.dataBase.password, {
+            host: this.dataBase.host,
+            dialect: 'mysql', 
+        });
+
+        const models = this.setUpModels();
+        this.setUpAssociations(models);
+
+        this.models = models;
+    }
+
     static getModels(){
         if(!this.sequelize){
-            this.sequelize = new Sequelize(this.dataBase.name, this.dataBase.user, this.dataBase.password, {
-              host: this.dataBase.host,
-              dialect: 'mysql', 
-            });
-    
-            const models = this.setUpModels();
-            this.setUpAssociations(models);
-    
-            this.models = models;
+            this.setUp();
         }
 
         return this.models;
