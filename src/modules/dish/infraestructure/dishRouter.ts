@@ -6,11 +6,11 @@ import UpdateDishUseCase from '../application/updateDishUseCase';
 import DeleteDishUseCase from '../application/deleteDishUseCase';
 import CategoryRepositoryImplementation from '../../category/infraestructure/categoryRepositoryImplementation';
 import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUseCase';
-import { CategoryEntity } from '../../category/domain/categoryEntity';
 import { DishEntity } from '../domain/dishEntity';
+import RouterPattern from '../../../infraestructure/router/routerPattern';
 
-export default class DishRouter {
-    router: any;
+export default class DishRouter implements RouterPattern {
+    router: Router;
     getAllDishesUseCase: GetAllDishesUseCase;
     createDishUseCase: CreateDishUseCase;
     updateDishUseCase: UpdateDishUseCase;
@@ -19,7 +19,6 @@ export default class DishRouter {
     getCategoryByIdUseCase: GetCategoryByIdUseCase;
     categoryRepositoryImplementation: CategoryRepositoryImplementation;
     
-
     constructor(){
         this.router = express.Router();
 

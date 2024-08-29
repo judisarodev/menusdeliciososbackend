@@ -5,7 +5,7 @@ import CreateCategoryUseCase from '../application/createCategoryUseCase';
 import { CategoryEntity } from '../domain/categoryEntity';
 
 export default class CategoryRouter {
-    router: any;
+    router: Router;
     categoryRepositoryImplementation: CategoryRepositoryImplementation;
     getCategoriesUseCase: GetCategoriesUseCase;    
     createCategoryUseCase: CreateCategoryUseCase;
@@ -47,7 +47,7 @@ export default class CategoryRouter {
         });
     }
 
-    getRouter(): Router {
+    getRouter(): any {
         return this.router;
     }
 }
