@@ -2,14 +2,13 @@ import { CategoryEntity } from "../../category/domain/categoryEntity";
 
 export class DishEntity {
     dishId: number | undefined;
-    category: CategoryEntity;
+    category: CategoryEntity | undefined;
     name: string;
     price: number;
     description: string;
     image: string;
 
-    constructor(category: CategoryEntity, name: string, price: number, description: string, image: string, dishId?: number){
-        this.category = category;
+    constructor(name: string, price: number, description: string, image: string, dishId?: number){
         this.name = name;
         this.price = price; 
         this.description = description;
@@ -21,7 +20,7 @@ export class DishEntity {
         return this.dishId;
     }
 
-    getCategory(): CategoryEntity {
+    getCategory(): CategoryEntity | undefined{
         return this.category;
     }
 
@@ -39,5 +38,9 @@ export class DishEntity {
 
     getImage(): string {
         return this.image; 
+    }
+
+    setCategory(categoryEntity: CategoryEntity): void {
+        this.category = categoryEntity;
     }
 }

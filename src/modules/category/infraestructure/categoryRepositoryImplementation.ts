@@ -9,9 +9,14 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
         const category = await this.models.Category.findOne({
             where: { categoryId, restaurantId },
             attributes: ['name', 'image', 'categoryId'],
+            include: [{
+                model: this.models.Restaurant,
+                as: 'restaurant',
+                attributes: ['restaurantId', 'name']
+            }]
         });
-        const categoryEntity = new CategoryEntity(category.name, category.image, category.categoryId);
-        return categoryEntity;
+
+        return category;
     }
 
     async getAll(): Promise<CategoryEntity[]> {
