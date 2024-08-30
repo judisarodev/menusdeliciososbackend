@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import RouterPattern from "../../../infraestructure/router/routerPattern";
+import RouterPattern from "../../../domain/routerPattern";
 import GetAllRestaurantTypesUseCase from '../application/getAllRestaurantTypesUseCase';
 import RestaurantTypeRepositoryImplementation from './restaurantTypeRepositoryImplementation';
 

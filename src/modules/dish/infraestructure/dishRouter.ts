@@ -7,7 +7,7 @@ import DeleteDishUseCase from '../application/deleteDishUseCase';
 import CategoryRepositoryImplementation from '../../category/infraestructure/categoryRepositoryImplementation';
 import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUseCase';
 import { DishEntity } from '../domain/dishEntity';
-import RouterPattern from '../../../infraestructure/router/routerPattern';
+import RouterPattern from '../../../domain/routerPattern';
 
 export default class DishRouter implements RouterPattern {
     router: Router;

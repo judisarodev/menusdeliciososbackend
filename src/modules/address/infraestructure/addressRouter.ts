@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import RouterPattern from "../../../infraestructure/router/routerPattern";
+import RouterPattern from "../../../domain/routerPattern";
 import AddressRepositoryImplementation from './addressRepositoryImplementation';
 import UpdateAddressUseCase from '../application/updateAddressUseCase';
 import CreateAddressUseCase from '../application/createAddressUseCase';

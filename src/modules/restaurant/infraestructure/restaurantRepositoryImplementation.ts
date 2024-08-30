@@ -14,25 +14,20 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         this.models = SequelizeSetUp.getModels();
     }
 
-    async login(email: string, password: string): Promise<string> {
-        let jwt = '';
-
+    async login(email: string, password: string): Promise<boolean> {
         const restaurant = await this.models.Restaurant.findOne({
             where: { email },
             attributes: ['restaurantId', 'password'],
         });
-
         if(restaurant){
             const isMatch = await bcrypt.compare(password, restaurant.password);
+            console.log('isMatch', isMatch);
             if(isMatch){
-                jwt = 'jwt-random'; 
+                return true;
             }
         }
-
-        return jwt;
-    
+        return false;
     }
-    
 
     async create(restaurantEntity: RestaurantEntity): Promise<void> {
         await this.models.Restaurant.create({
