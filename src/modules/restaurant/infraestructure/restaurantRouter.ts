@@ -39,13 +39,18 @@ export default class RestaurantRouter implements RouterPattern {
 
     setUpRoutes(): void {
         this.router.post('/login', async (req: any, res: any) => {
-            const { email, password } = req.body;
-            const { isVerified, restaurantId } = await this.restaurantRepositoryImplementation.login(email, password);
-            if(isVerified){
-                const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
-                return res.status(200).json({ isVerified, jwt });
+            try{
+                const { email, password } = req.body;
+                const { isVerified, restaurantId } = await this.restaurantRepositoryImplementation.login(email, password);
+                if(isVerified){
+                    const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
+                    return res.status(200).json({ message: 'Has iniciado sesión exitosamente', isVerified, jwt });
+                }
+                return res.status(401).json({ message: 'Credenciales incorrectas', isVerified });
+            }catch(error){
+                console.error(error);
+                return res.status(500).json({ message: 'Hubo un error al iniciar sesión', isVerified: false }); 
             }
-            return res.status(401).json({ isVerified });
         });
         
         this.router.post('/create', async (req: any, res: any) => {
