@@ -22,4 +22,8 @@ export default class PhoneEntity {
     getPhoneCode(): PhoneCodeEntity {
         return this.phoneCode; 
     }
+
+    setPhoneId(phoneId: number): void {
+        this.phoneId = phoneId; 
+    }
 }

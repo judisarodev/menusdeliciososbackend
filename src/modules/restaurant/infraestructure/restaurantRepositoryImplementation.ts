@@ -34,15 +34,23 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         };
     }
 
-    async create(restaurantEntity: RestaurantEntity): Promise<void> {
-        await this.models.Restaurant.create({
-            name: restaurantEntity.getName(),
-            email: restaurantEntity.getEmail(),
-            password: restaurantEntity.getPassword(),
-            phoneId: restaurantEntity.getPhone().getPhoneId(),
-            addressId: restaurantEntity.getAddress().getAddressId(),
-            restaurantTypeId: restaurantEntity.getRestaurantType().getRestaurantTypeId()
-        });
+    async create(restaurantEntity: RestaurantEntity, transaction?: any): Promise<void> {
+        try{
+            await this.models.Restaurant.create({
+                name: restaurantEntity.getName(),
+                email: restaurantEntity.getEmail(),
+                password: restaurantEntity.getPassword(),
+                phoneId: restaurantEntity.getPhone()?.getPhoneId(),
+                addressId: restaurantEntity.getAddress()?.getAddressId(),
+                restaurantTypeId: restaurantEntity.getRestaurantType()?.getRestaurantTypeId()
+            }, {
+                transaction
+            });
+        }catch(error){
+            console.error(error);
+            await transaction.rollback();
+            throw error;
+        }
     }
     
     async getById(restaurantId: number): Promise<RestaurantEntity> {
@@ -86,9 +94,11 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
 
         const restaurantEntity = new RestaurantEntity(
             restaurant.name, restaurant.email, 
-            restaurant.password, restaurant.logo, 
-            phoneEntity, addressEntity, 
-            restaurantTypeEntity, restaurantId);
+            restaurant.password, restaurant.logo, restaurantId);
+        
+        restaurant.setPhone(phoneEntity);
+        restaurant.setAddress(addressEntity);
+        restaurant.setRestaurantType(restaurantTypeEntity); 
 
         return restaurantEntity;
     }

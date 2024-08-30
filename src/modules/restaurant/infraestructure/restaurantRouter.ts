@@ -9,6 +9,9 @@ import AddressEntity from '../../address/domain/addressEntity';
 import RestaurantTypeEntity from '../../restaurant_type/domain/restaurantTypeEntity';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
 import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import SequelizeSetUp from '../../../infraestructure/config/sequelize';
+import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
+import PhoneRepositoryImplementation from '../../phone/infraestructure/phoneRepositoryImplementation';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -17,10 +20,18 @@ export default class RestaurantRouter implements RouterPattern {
     getRestaurantByIdUseCase: GetRestaurantByIdUseCase;
     createRestaurantUseCase: CreateRestaurantUseCase;
     authenticationPatternImplementation: AuthenticationPatternImplementation;
+    addressRepositoryImplementation: AddressRepositoryImplementation;
+    phoneRepositoryImplementation: PhoneRepositoryImplementation;
     constructor(){
         this.router = Router();
         this.restaurantRepositoryImplementation = new RestaurantRepositoryImplementation();
-        this.createRestaurantUseCase = new CreateRestaurantUseCase(this.restaurantRepositoryImplementation);
+        this.addressRepositoryImplementation = new AddressRepositoryImplementation();
+        this.phoneRepositoryImplementation= new PhoneRepositoryImplementation();
+        this.createRestaurantUseCase = new CreateRestaurantUseCase(
+            this.restaurantRepositoryImplementation, 
+            this.addressRepositoryImplementation,
+            this.phoneRepositoryImplementation
+        );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation); 
         this.authenticationPatternImplementation = new AuthenticationPatternImplementation();
         this.setUpRoutes();
@@ -38,24 +49,18 @@ export default class RestaurantRouter implements RouterPattern {
         });
         
         this.router.post('/create', async (req: any, res: any) => {
+            const transaction = SequelizeSetUp.getSequelize().transaction();
             try{
-                const { name, email, password, logo, phoneInfo, addressInfo, restaurantType } = req.body;
+                const { name, email, password, logo, phoneInfo, addressInfo, restaurantTypeInfo } = req.body;
+                const restaurantEntity = new RestaurantEntity(name, email, password, logo);
+                await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo, transaction);
 
-                const { phoneNumber, poneCode, phoneId } = phoneInfo;
-                const phoneEntity = new PhoneEntity(phoneNumber, poneCode, phoneId);
-
-                const { address, addressDetails, addressId } = addressInfo;
-                const addressEntity = new AddressEntity(address, addressDetails, addressId);
-
-                const { restaurantTypeName, restaurantTypeId } = restaurantType;
-                const restaurantTypeEntity = new RestaurantTypeEntity(restaurantTypeName, restaurantTypeId);
-
-                const restaurantEntity = new RestaurantEntity(name, email, password, logo, phoneEntity, addressEntity, restaurantTypeEntity);
-                await this.createRestaurantUseCase.execute(restaurantEntity);
+                await transaction.commit();
 
                 return res.status(200).json({ message: 'Restaurante creado exitosamente' });
             }catch(error){
                 console.error(error);
+                await transaction.rollback();
                 return res.status(500).json(error);
             }
         });

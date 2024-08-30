@@ -8,19 +8,16 @@ export default class RestaurantEntity {
     private email: string;
     private password: string;
     private logo: string;
-    private phone: PhoneEntity; 
-    private address: AddressEntity;
-    private restaurantType: RestaurantTypeEntity;
+    private phone: PhoneEntity | undefined; 
+    private address: AddressEntity | undefined;
+    private restaurantType: RestaurantTypeEntity | undefined;
 
-    constructor(name: string, email: string, password: string, logo: string, phone: PhoneEntity, address: AddressEntity, restaurantType: RestaurantTypeEntity, restaurantId?: number){
+    constructor(name: string, email: string, password: string, logo: string, restaurantId?: number){
         this.restaurantId = restaurantId;
         this.name = name; 
         this.email = email;
         this.password = password;
         this.logo = logo;
-        this.phone = phone; 
-        this.address = address;
-        this.restaurantType = restaurantType; 
     }
 
     getRestaurantId(): number | undefined {
@@ -43,15 +40,27 @@ export default class RestaurantEntity {
         return this.logo;
     }
 
-    getPhone(): PhoneEntity {
+    getPhone(): PhoneEntity | undefined {
         return this.phone;
     }
 
-    getAddress(): AddressEntity {
+    getAddress(): AddressEntity | undefined {
         return this.address;
     }
 
-    getRestaurantType(): RestaurantTypeEntity {
+    getRestaurantType(): RestaurantTypeEntity | undefined {
         return this.restaurantType; 
+    }
+
+    setPhone(phoneEntity: PhoneEntity): void {
+        this.phone = phoneEntity;
+    }
+
+    setAddress(address: AddressEntity){
+        this.address = address;
+    }
+
+    setRestaurantType(restaurantType: RestaurantTypeEntity){
+        this.restaurantType = restaurantType; 
     }
 }

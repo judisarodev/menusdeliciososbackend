@@ -20,4 +20,8 @@ export default class AddressEntity {
     getAddressDetails(): string | undefined{
         return this.addressDetails; 
     }
+
+    setAddressId(addressId: number): void {
+        this.addressId = addressId;
+    }
 }

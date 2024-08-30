@@ -1,10 +1,38 @@
+import AddressEntity from "../../address/domain/addressEntity";
+import AddressRepositoryImplementation from "../../address/infraestructure/addressRepositoryImplementation";
+import PhoneEntity from "../../phone/domain/phoneEntity";
+import PhoneRepositoryImplementation from "../../phone/infraestructure/phoneRepositoryImplementation";
+import PhoneCodeEntity from "../../phone_code/phoneCodeEntity";
+import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 import RestaurantEntity from "../domain/restaurantEntity";
 import RestaurantRepositoryImplementation from "../infraestructure/restaurantRepositoryImplementation";
 
 export default class CreateRestaurantUseCase {
-    constructor(private restaurantRepositoryImplementation: RestaurantRepositoryImplementation){}
+    constructor(
+        private restaurantRepositoryImplementation: RestaurantRepositoryImplementation,
+        private addressRepositoryImplementation: AddressRepositoryImplementation,
+        private phoneRepositoryImplementation: PhoneRepositoryImplementation,
+    ){}
 
-    async execute(restaurant: RestaurantEntity){
-        this.restaurantRepositoryImplementation.create(restaurant);
+    async execute(restaurant: RestaurantEntity, phoneInfo: any, addressInfo: any, restaurantTypeInfo: any, transaction: any){
+        const { phoneNumber, poneCode } = phoneInfo;
+        const { code, country, phoneCodeId } = poneCode;
+        const { address, addressDetails } = addressInfo;
+
+        const phoneEntity = new PhoneEntity(phoneNumber, new PhoneCodeEntity(code, country, phoneCodeId));
+        const phoneId = await this.phoneRepositoryImplementation.create(phoneEntity, transaction);
+        phoneEntity.setPhoneId(phoneId);
+
+        const addressEntity = new AddressEntity(address, addressDetails);
+        const addressId = await this.addressRepositoryImplementation.create(addressEntity, transaction);
+        addressEntity.setAddressId(addressId);
+
+        const { restaurantTypeName, restaurantTypeId } = restaurantTypeInfo;
+        const restaurantTypeEntity = new RestaurantTypeEntity(restaurantTypeName, restaurantTypeId);
+
+        restaurant.setAddress(addressEntity);
+        restaurant.setPhone(phoneEntity);
+        restaurant.setRestaurantType(restaurantTypeEntity); 
+        this.restaurantRepositoryImplementation.create(restaurant, transaction);
     }
 }

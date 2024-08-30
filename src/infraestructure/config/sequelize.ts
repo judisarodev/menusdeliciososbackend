@@ -30,6 +30,13 @@ export default class SequelizeSetUp {
 
         this.models = models;
     }
+    
+    static getSequelize(){
+        if(!this.sequelize){
+            this.setUp();
+        }
+        return this.sequelize;
+    }
 
     static getModels(){
         if(!this.sequelize){
