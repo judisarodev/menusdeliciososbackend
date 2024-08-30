@@ -6,7 +6,6 @@ import RestaurantTypeRouter from '../../modules/restaurant_type/infraestructure/
 import PhoneRouter from '../../modules/phone/infraestructure/phoneRouter';
 import AddressRouter from '../../modules/address/infraestructure/addressRouter';
 import RestaurantRouter from '../../modules/restaurant/infraestructure/restaurantRouter';
-import authenticateRestaurant from '../../middlewares/authenticateRestaurantMiddleware';
 
 export default class Router implements RouterPattern{
     router: any;
@@ -34,7 +33,7 @@ export default class Router implements RouterPattern{
         this.router.use('/restaurant-type', this.restaurantTypeRouter.getRouter());
         this.router.use('/phone', this.phoneRouter.getRouter());
         this.router.use('/address', this.addressRouter.getRouter());
-        this.router.use('/restaurant', authenticateRestaurant, this.restaurantRouter.getRouter());
+        this.router.use('/restaurant', this.restaurantRouter.getRouter());
 
     }
 

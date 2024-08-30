@@ -8,6 +8,7 @@ import CategoryRepositoryImplementation from '../../category/infraestructure/cat
 import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUseCase';
 import { DishEntity } from '../domain/dishEntity';
 import RouterPattern from '../../../domain/routerPattern';
+import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
 
 export default class DishRouter implements RouterPattern {
     router: Router;
@@ -39,7 +40,7 @@ export default class DishRouter implements RouterPattern {
     }
 
     setUpRoutes(){
-        this.router.get('/get-all', async (req: any, res: any) => {
+        this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const dishes = await this.getAllDishesUseCase.execute();
                 return res.status(200).json(dishes);
@@ -49,7 +50,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.post('/create', async (req: any, res: any) => {
+        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const { categoryId, name, price, description, image } = req.body;
 
@@ -64,7 +65,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.get('/update', async (req: any, res: any) => {
+        this.router.get('/update', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const dishes = await this.getAllDishesUseCase.execute();
                 return res.status(200).json(dishes);

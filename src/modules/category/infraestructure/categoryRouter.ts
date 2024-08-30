@@ -3,6 +3,7 @@ import CategoryRepositoryImplementation from './categoryRepositoryImplementation
 import GetCategoriesUseCase from '../application/getCategoriesUseCase';
 import CreateCategoryUseCase from '../application/createCategoryUseCase';
 import { CategoryEntity } from '../domain/categoryEntity';
+import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
 
 export default class CategoryRouter {
     router: Router;
@@ -24,7 +25,7 @@ export default class CategoryRouter {
     }
 
     setUpRoutes(){
-        this.router.get('/get-all', async (req: any, res: any) => {
+        this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const categories = await this.getCategoriesUseCase.execute();
                 return res.status(200).json(categories);
@@ -34,7 +35,7 @@ export default class CategoryRouter {
             }
         });
 
-        this.router.post('/create', async (req: any, res: any) => {
+        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const { name, image, icon } = req.body;
                 const categoryEntity = new CategoryEntity(name, image, icon);

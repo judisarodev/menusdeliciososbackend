@@ -14,7 +14,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         this.models = SequelizeSetUp.getModels();
     }
 
-    async login(email: string, password: string): Promise<boolean> {
+    async login(email: string, password: string): Promise<any> {
         const restaurant = await this.models.Restaurant.findOne({
             where: { email },
             attributes: ['restaurantId', 'password'],
@@ -23,10 +23,15 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
             const isMatch = await bcrypt.compare(password, restaurant.password);
             console.log('isMatch', isMatch);
             if(isMatch){
-                return true;
+                return {
+                    isVerified: isMatch,
+                    restaurantId: restaurant.restaurantId,
+                };
             }
         }
-        return false;
+        return {
+            isVerified: false,
+        };
     }
 
     async create(restaurantEntity: RestaurantEntity): Promise<void> {

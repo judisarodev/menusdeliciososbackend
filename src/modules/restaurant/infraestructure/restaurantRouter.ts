@@ -8,6 +8,7 @@ import PhoneEntity from '../../phone/domain/phoneEntity';
 import AddressEntity from '../../address/domain/addressEntity';
 import RestaurantTypeEntity from '../../restaurant_type/domain/restaurantTypeEntity';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
+import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -27,18 +28,13 @@ export default class RestaurantRouter implements RouterPattern {
 
     setUpRoutes(): void {
         this.router.post('/login', async (req: any, res: any) => {
-            try{
-                const { email, password } = req.body;
-                const isVerified = await this.restaurantRepositoryImplementation.login(email, password);
-                if(isVerified){
-                    const jwt = await this.authenticationPatternImplementation.signToken();
-                    return res.status(200).json({ isVerified, jwt });
-                }
-                return res.status(401).json({ isVerified });
-            }catch(error){
-                console.error(error);
-                return res.status(500).json(error);
+            const { email, password } = req.body;
+            const { isVerified, restaurantId } = await this.restaurantRepositoryImplementation.login(email, password);
+            if(isVerified){
+                const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
+                return res.status(200).json({ isVerified, jwt });
             }
+            return res.status(401).json({ isVerified });
         });
         
         this.router.post('/create', async (req: any, res: any) => {
@@ -64,9 +60,9 @@ export default class RestaurantRouter implements RouterPattern {
             }
         });
 
-        this.router.get('/get-by-id/:restaurantId', async (req: any, res: any) => {
+        this.router.get('/get', authenticateRestaurant, async (req: any, res: any) => {
             try{
-                const { restaurantId } = req.params;
+                const restaurantId = req.restaurantId;
                 const restaurantEntity = await this.getRestaurantByIdUseCase.execute(restaurantId); 
                 return res.status(200).json(restaurantEntity); 
             }catch(error){

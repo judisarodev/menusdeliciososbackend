@@ -8,12 +8,12 @@ export default class AuthenticationPatternImplementation implements Authenticati
     private secret: any = new TextEncoder().encode(process.env.SECRET || 'secret'); 
     private algorithm: string = 'HS256'; 
 
-    async signToken(): Promise<string> {
-        const jwt = await new SignJWT({ 'urn:example:claim': true })
+    async signToken(restaurantId: number): Promise<string> {
+        const jwt = await new SignJWT({ restaurantId })
             .setProtectedHeader({ alg: this.algorithm })
             .setIssuedAt()
-            .setIssuer('urn:example:issuer')
-            .setAudience('urn:example:audience')
+            .setIssuer('menusdeliciosos')
+            .setAudience('restaurant')
             .setExpirationTime('2h')
             .sign(this.secret);
 
@@ -21,10 +21,10 @@ export default class AuthenticationPatternImplementation implements Authenticati
         return jwt;
     }
 
-    async verifyToken(token: string): Promise<boolean> {
+    async verifyToken(token: string): Promise<any> {
         const { payload } = await jwtVerify(token, this.secret);
         if(payload){
-            return true;
+            return payload;
         }
         return false;
     }

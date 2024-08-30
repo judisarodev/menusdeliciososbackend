@@ -1,4 +1,4 @@
 export default interface AuthenticationPattern {
-   signToken(): Promise<string>;
-   verifyToken(token: string): Promise<boolean>; 
+   signToken(restaurantId: number): Promise<string>;
+   verifyToken(token: string): Promise<any>; 
 }
