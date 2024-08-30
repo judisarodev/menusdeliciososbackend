@@ -6,9 +6,9 @@ import { CategoryEntity } from "../../category/domain/categoryEntity";
 export class DishRepositoryImplementation implements DishRepository{
     models: any = SequelizeSetUp.getModels();
 
-    async update(dishId: number, data: any): Promise<DishEntity> {
-        const updatedDish = await this.models.Product.update(data, { where: { dishId } });
-        return updatedDish;
+    async update(dishId: number, data: any): Promise<boolean> {
+        const [wasUpdated] = await this.models.Product.update(data, { where: { productId: dishId } });
+        return wasUpdated;
     }
 
     async getAll(categories: CategoryEntity[]): Promise<DishEntity> {

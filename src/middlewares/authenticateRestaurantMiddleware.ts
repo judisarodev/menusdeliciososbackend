@@ -11,12 +11,13 @@ const authenticateRestaurant = async (req: any, res: any, next: any) => {
         }
         const payload = await authenticationPatternImplementation.verifyToken(token);
         if(!payload || !payload.restaurantId){
-            return res.status(401).json({ isVerified: false });
+            return res.status(401).json({ message: 'Payload requerido no fue proporcionado' });
         }
         req.restaurantId = payload.restaurantId;
         next();
     }catch(error){
-        return res.status(401).json({ isVerified: false });
+        console.error(error);
+        return res.status(401).json({ message: 'Error en la verificación', isVerified: false });
     }
 }
 

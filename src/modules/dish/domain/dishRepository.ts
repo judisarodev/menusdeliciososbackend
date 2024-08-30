@@ -5,5 +5,5 @@ export interface DishRepository {
     getAll(categories: CategoryEntity[]): Promise<DishEntity>;
     create(dish: DishEntity): void;
     delete(dishId: number): Promise<DishEntity>;
-    update(dishId: number, data: any): Promise<DishEntity>;
+    update(dishId: number, data: any): Promise<boolean>;
 }
