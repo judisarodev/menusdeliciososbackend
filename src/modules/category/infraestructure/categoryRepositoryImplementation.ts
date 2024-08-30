@@ -20,15 +20,20 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
     }
 
     async getAll(restaurantId: number): Promise<CategoryEntity[]> {
-        const categories = await this.models.Category.findAll({
-            attributes: ['name', 'image', 'categoryId'],
-            where: { restaurantId }
-        });
-        const categoryEntities = [];
-        for(const category of categories){
-            categoryEntities.push(new CategoryEntity(category.name, category.image, category.categoryId));
+        try{
+            const categories = await this.models.Category.findAll({
+                attributes: ['name', 'image', 'icon', 'categoryId'],
+                where: { restaurantId }
+            });
+            const categoryEntities = [];
+            for(const category of categories){
+                categoryEntities.push(new CategoryEntity(category.name, category.image, category.icon, category.categoryId));
+            }
+            return categoryEntities;
+        }catch(error){
+            console.error(error);
+            throw error;
         }
-        return categoryEntities;
     }
 
     async create(categoryEntity: CategoryEntity) {
