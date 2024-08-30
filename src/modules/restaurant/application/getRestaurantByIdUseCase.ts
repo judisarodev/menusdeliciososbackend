@@ -5,6 +5,6 @@ export default class GetRestaurantByIdUseCase {
     constructor(private restaurantRepositoryImplementation: RestaurantRepositoryImplementation){}
 
     async execute(restaurantId: number){
-        this.restaurantRepositoryImplementation.getById(restaurantId);
+        return await this.restaurantRepositoryImplementation.getById(restaurantId);
     }
 }

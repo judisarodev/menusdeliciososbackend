@@ -17,6 +17,7 @@ export default class RestaurantModel {
         },
         email: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
         }, 
         password: {
