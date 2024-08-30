@@ -21,7 +21,18 @@ export class DishRepositoryImplementation implements DishRepository{
     }
     
     async create(dish: DishEntity) {
-        await this.models.Product.create(dish);
+        let categoryId;
+        const category = dish.getCategory();
+        if(category){
+            categoryId = category.getCategoryId() || 1;
+        }
+        await this.models.Product.create({
+            name: dish.getName(),
+            price: dish.getPrice(),
+            description: dish.getDescription(),
+            image: dish.getImage(),
+            categoryId
+        });
     }
 
     async delete(dishId: number): Promise<DishEntity> {
