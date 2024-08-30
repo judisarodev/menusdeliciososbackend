@@ -1,0 +1,23 @@
+import { Request, Response, NextFunction } from 'express';
+import AuthenticationPatternImplementation from '../infraestructure/authentication/authenticationPatternInplementation';
+
+const authenticationPatternImplementation = new AuthenticationPatternImplementation();
+
+const authenticateRestaurant = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const authorizationHeader = req.headers['authorization'];
+        const token = authorizationHeader && authorizationHeader.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'Petición sin token de verificación' });
+        }
+        const isVerified = await authenticationPatternImplementation.verifyToken(token);
+        if(!isVerified){
+            return res.status(401).json(isVerified);
+        }
+        next();
+    }catch(error){
+        return res.status(401).json({ isVerified: false });
+    }
+}
+
+export default authenticateRestaurant;

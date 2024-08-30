@@ -9,8 +9,6 @@ import AddressEntity from '../../address/domain/addressEntity';
 import RestaurantTypeEntity from '../../restaurant_type/domain/restaurantTypeEntity';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
 
-import bcrypt from 'bcrypt';
-
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
     restaurantRepositoryImplementation: RestaurantRepositoryImplementation;

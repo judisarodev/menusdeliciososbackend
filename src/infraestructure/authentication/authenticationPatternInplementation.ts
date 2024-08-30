@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import AuthenticationPattern from "../../domain/authenticationPattern";
-import * as jose from 'jose'
+import { jwtVerify, SignJWT } from 'jose'
 
 export default class AuthenticationPatternImplementation implements AuthenticationPattern {
 
@@ -9,7 +9,7 @@ export default class AuthenticationPatternImplementation implements Authenticati
     private algorithm: string = 'HS256'; 
 
     async signToken(): Promise<string> {
-        const jwt = await new jose.SignJWT({ 'urn:example:claim': true })
+        const jwt = await new SignJWT({ 'urn:example:claim': true })
             .setProtectedHeader({ alg: this.algorithm })
             .setIssuedAt()
             .setIssuer('urn:example:issuer')
@@ -21,8 +21,12 @@ export default class AuthenticationPatternImplementation implements Authenticati
         return jwt;
     }
 
-    verifyToekn(token: string): boolean {
-        throw new Error("Method not implemented.");
+    async verifyToken(token: string): Promise<boolean> {
+        const { payload } = await jwtVerify(token, this.secret);
+        if(payload){
+            return true;
+        }
+        return false;
     }
 
 }
