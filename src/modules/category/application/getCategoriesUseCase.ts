@@ -5,7 +5,7 @@ export default class GetCategoriesUseCase{
 
     }
 
-    execute(){
-        return this.categoryRepositoryImplementation.getAll();
+    execute(restaurantId: number){
+        return this.categoryRepositoryImplementation.getAll(restaurantId);
     }
 }

@@ -9,6 +9,7 @@ import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUs
 import { DishEntity } from '../domain/dishEntity';
 import RouterPattern from '../../../domain/routerPattern';
 import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import GetCategoriesUseCase from '../../category/application/getCategoriesUseCase';
 
 export default class DishRouter implements RouterPattern {
     router: Router;
@@ -19,22 +20,19 @@ export default class DishRouter implements RouterPattern {
     dishRepositoryImplementation: DishRepositoryImplementation;
     getCategoryByIdUseCase: GetCategoryByIdUseCase;
     categoryRepositoryImplementation: CategoryRepositoryImplementation;
+    getCategoriesUseCase: GetCategoriesUseCase;
     
     constructor(){
         this.router = express.Router();
-
-        // Dish Repository Instance
         this.dishRepositoryImplementation = new DishRepositoryImplementation();
-        // Dish Use Cases Instances
         this.getAllDishesUseCase = new GetAllDishesUseCase(this.dishRepositoryImplementation);
         this.createDishUseCase = new CreateDishUseCase(this.dishRepositoryImplementation);
         this.updateDishUseCase = new UpdateDishUseCase(this.dishRepositoryImplementation);
         this.deleteDishUseCase = new DeleteDishUseCase(this.dishRepositoryImplementation);
 
-        // Category Repository Instance
         this.categoryRepositoryImplementation = new CategoryRepositoryImplementation();
-        // Category Use Cases Instances
         this.getCategoryByIdUseCase = new GetCategoryByIdUseCase(this.categoryRepositoryImplementation);
+        this.getCategoriesUseCase = new GetCategoriesUseCase(this.categoryRepositoryImplementation);
 
         this.setUpRoutes();
     }
@@ -43,7 +41,8 @@ export default class DishRouter implements RouterPattern {
         this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;
-                const dishes = await this.getAllDishesUseCase.execute(restaurantId);
+                const categories = await this.getCategoriesUseCase.execute(restaurantId);
+                const dishes = await this.getAllDishesUseCase.execute(categories);
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);

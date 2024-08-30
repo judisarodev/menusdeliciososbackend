@@ -1,6 +1,7 @@
 import { DishEntity } from "../domain/dishEntity";
 import { DishRepository } from "../domain/dishRepository";
 import SequelizeSetUp from "../../../infraestructure/config/sequelize";
+import { CategoryEntity } from "../../category/domain/categoryEntity";
 
 export class DishRepositoryImplementation implements DishRepository{
     models: any = SequelizeSetUp.getModels();
@@ -10,9 +11,12 @@ export class DishRepositoryImplementation implements DishRepository{
         return updatedDish;
     }
 
-    async getAll(restaurantId: number): Promise<DishEntity> {
+    async getAll(categories: CategoryEntity[]): Promise<DishEntity> {
+        const categoryIds = categories.map((category: CategoryEntity) => {
+            return category.getCategoryId()
+        });
         return await this.models.Product.findAll({
-            where: { restaurantId }
+            categoryId: categoryIds
         });
     }
     

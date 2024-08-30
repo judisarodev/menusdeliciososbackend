@@ -31,7 +31,8 @@ export default class CategoryRouter {
     setUpRoutes(){
         this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
             try{
-                const categories = await this.getCategoriesUseCase.execute();
+                const restaurantId = req.restaurantId;
+                const categories = await this.getCategoriesUseCase.execute(restaurantId);
                 return res.status(200).json(categories);
             }catch(error){
                 console.error(error);
