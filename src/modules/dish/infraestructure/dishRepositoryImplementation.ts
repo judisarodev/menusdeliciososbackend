@@ -10,8 +10,10 @@ export class DishRepositoryImplementation implements DishRepository{
         return updatedDish;
     }
 
-    async getAll(): Promise<DishEntity> {
-        return await this.models.Product.findAll();
+    async getAll(restaurantId: number): Promise<DishEntity> {
+        return await this.models.Product.findAll({
+            where: { restaurantId }
+        });
     }
     
     async create(dish: DishEntity) {

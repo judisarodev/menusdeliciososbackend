@@ -42,7 +42,8 @@ export default class DishRouter implements RouterPattern {
     setUpRoutes(){
         this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
             try{
-                const dishes = await this.getAllDishesUseCase.execute();
+                const restaurantId = req.restaurantId;
+                const dishes = await this.getAllDishesUseCase.execute(restaurantId);
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);
@@ -51,14 +52,16 @@ export default class DishRouter implements RouterPattern {
         });
 
         this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
-            try{
+            try{           
+                const restaurantId = req.restaurantId;    
                 const { categoryId, name, price, description, image } = req.body;
-
-                const categoryEntity = await this.getCategoryByIdUseCase.execute(categoryId);
-                const dishEntity = new DishEntity(categoryEntity, name, price, description, image);
-
-                const createdDish = await this.createDishUseCase.execute(dishEntity);
-                return res.status(200).json(createdDish);
+                const categoryEntity = await this.getCategoryByIdUseCase.execute(categoryId, restaurantId);
+                if(categoryEntity){
+                    const dishEntity = new DishEntity(categoryEntity, name, price, description, image);
+                    const createdDish = await this.createDishUseCase.execute(dishEntity);
+                    return res.status(200).json(createdDish);
+                }
+                return res.status(200).json({ message: 'No fue posible insertar el producto' });
             }catch(error){
                 console.error(error);
                 return res.status(200).json(error);
@@ -67,8 +70,8 @@ export default class DishRouter implements RouterPattern {
 
         this.router.get('/update', authenticateRestaurant, async (req: any, res: any) => {
             try{
-                const dishes = await this.getAllDishesUseCase.execute();
-                return res.status(200).json(dishes);
+                //const dishes = await this.getAllDishesUseCase.execute();
+                return res.status(200).json({ message: 'Servicio no implementado' });
             }catch(error){
                 console.error(error);
                 return res.status(200).json(error);
@@ -77,8 +80,8 @@ export default class DishRouter implements RouterPattern {
 
         this.router.get('/delete', async (req: any, res: any) => {
             try{
-                const dishes = await this.getAllDishesUseCase.execute();
-                return res.status(200).json(dishes);
+                //const dishes = await this.getAllDishesUseCase.execute();
+                return res.status(200).json({ message: 'Servicio no implementado' });
             }catch(error){
                 console.error(error);
                 return res.status(200).json(error); 

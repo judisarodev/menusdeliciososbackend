@@ -6,7 +6,7 @@ export default class GetCategoryByIdUseCase {
 
     }
 
-    async execute(categoryId: number){
-        return await this.categoryRepositoryImplementation.getById(categoryId);
+    async execute(categoryId: number, restaurantId: number){
+        return await this.categoryRepositoryImplementation.getById(categoryId, restaurantId);
     }
 }

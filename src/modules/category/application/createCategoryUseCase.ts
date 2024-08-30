@@ -7,7 +7,7 @@ export default class CreateCategoryUseCase {
 
     }
 
-    async execute(categoryEntity: CategoryEntity){
+    async execute(categoryEntity: CategoryEntity, restaurantId: number){
         await this.categoryRepositoryImplementation.create(categoryEntity);
     }
 }
