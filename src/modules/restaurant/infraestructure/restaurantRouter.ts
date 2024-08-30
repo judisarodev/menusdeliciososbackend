@@ -49,18 +49,13 @@ export default class RestaurantRouter implements RouterPattern {
         });
         
         this.router.post('/create', async (req: any, res: any) => {
-            const transaction = SequelizeSetUp.getSequelize().transaction();
             try{
                 const { name, email, password, logo, phoneInfo, addressInfo, restaurantTypeInfo } = req.body;
                 const restaurantEntity = new RestaurantEntity(name, email, password, logo);
-                await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo, transaction);
-
-                await transaction.commit();
-
+                await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo);
                 return res.status(200).json({ message: 'Restaurante creado exitosamente' });
             }catch(error){
                 console.error(error);
-                await transaction.rollback();
                 return res.status(500).json(error);
             }
         });

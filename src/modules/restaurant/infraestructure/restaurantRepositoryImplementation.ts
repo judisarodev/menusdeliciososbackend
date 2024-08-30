@@ -21,7 +21,6 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         });
         if(restaurant){
             const isMatch = await bcrypt.compare(password, restaurant.password);
-            console.log('isMatch', isMatch);
             if(isMatch){
                 return {
                     isVerified: isMatch,
@@ -34,21 +33,20 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         };
     }
 
-    async create(restaurantEntity: RestaurantEntity, transaction?: any): Promise<void> {
+    async create(restaurantEntity: RestaurantEntity): Promise<void> {
         try{
+            const hashedPassword = await bcrypt.hash(restaurantEntity.getPassword(), 10); 
+
             await this.models.Restaurant.create({
                 name: restaurantEntity.getName(),
                 email: restaurantEntity.getEmail(),
-                password: restaurantEntity.getPassword(),
+                password: hashedPassword,
                 phoneId: restaurantEntity.getPhone()?.getPhoneId(),
                 addressId: restaurantEntity.getAddress()?.getAddressId(),
                 restaurantTypeId: restaurantEntity.getRestaurantType()?.getRestaurantTypeId()
-            }, {
-                transaction
             });
         }catch(error){
             console.error(error);
-            await transaction.rollback();
             throw error;
         }
     }

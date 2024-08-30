@@ -9,19 +9,17 @@ export default class PhoneRepositoryImplementation implements PhoneRepository{
         this.models = SequelizeSetUp.getModels();
     }
 
-    async create(phone: PhoneEntity, transaction?: any) {
+    async create(phone: PhoneEntity) {
         try{
             const createdPhone = await this.models.Phone.create({
                 phoneNumber: phone.getPhoneNumber(),
                 phoneCodeId: phone.getPhoneCode().getPhoneCodeId(),
-            }, {
-                transaction
             });
-            const phoneId = createdPhone.id;
+            console.log('createdPhone', createdPhone);
+            const phoneId = createdPhone.phoneId;
             return phoneId;
         }catch(error){
             console.error(error);
-            transaction.rollback();
             throw error;
         }
     }
