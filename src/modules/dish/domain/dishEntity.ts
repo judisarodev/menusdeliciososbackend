@@ -1,16 +1,16 @@
 import { CategoryEntity } from "../../category/domain/categoryEntity";
-
+import formatCurrency from './../../../utils/formatCurrency';
 export class DishEntity {
     dishId: number | undefined;
     category: CategoryEntity | undefined;
     name: string;
-    price: number;
+    price: string;
     description: string;
     image: string;
 
     constructor(name: string, price: number, description: string, image: string, dishId?: number){
         this.name = name;
-        this.price = price; 
+        this.price = formatCurrency(price); 
         this.description = description;
         this.image = image;
         this.dishId = dishId;
@@ -28,7 +28,7 @@ export class DishEntity {
         return this.name;
     }
 
-    getPrice(): number {
+    getPrice(): string {
         return this.price; 
     }
 
