@@ -59,7 +59,18 @@ export default class DishRouter implements RouterPattern {
                     const dishEntity = new DishEntity(name, price, description, image);
                     dishEntity.setCategory(categoryEntity);
                     const createdDish = await this.createDishUseCase.execute(dishEntity);
-                    return res.status(200).json(createdDish);
+                    return res.status(200).json({
+                        description: dishEntity.getDescription(),
+                        name: dishEntity.getName(),
+                        price: dishEntity.getPrice(),
+                        image: dishEntity.getImage(),
+                        category: {
+                            categoryId: categoryEntity.getCategoryId(),
+                            name: categoryEntity.getName(),
+                            image: categoryEntity.getImage(),
+                            icon: categoryEntity.getIcon(),
+                        }
+                    });
                 }
                 return res.status(200).json({ message: 'No fue posible insertar el producto' });
             }catch(error){
