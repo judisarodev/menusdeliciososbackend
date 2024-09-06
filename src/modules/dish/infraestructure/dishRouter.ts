@@ -10,6 +10,7 @@ import { DishEntity } from '../domain/dishEntity';
 import RouterPattern from '../../../domain/routerPattern';
 import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
 import GetCategoriesUseCase from '../../category/application/getCategoriesUseCase';
+import GetDishUseCase from '../application/getDishUseCase';
 
 export default class DishRouter implements RouterPattern {
     router: Router;
@@ -21,6 +22,7 @@ export default class DishRouter implements RouterPattern {
     getCategoryByIdUseCase: GetCategoryByIdUseCase;
     categoryRepositoryImplementation: CategoryRepositoryImplementation;
     getCategoriesUseCase: GetCategoriesUseCase;
+    getDishUseCase: GetDishUseCase;
     
     constructor(){
         this.router = express.Router();
@@ -34,6 +36,8 @@ export default class DishRouter implements RouterPattern {
         this.getCategoryByIdUseCase = new GetCategoryByIdUseCase(this.categoryRepositoryImplementation);
         this.getCategoriesUseCase = new GetCategoriesUseCase(this.categoryRepositoryImplementation);
 
+        this.getDishUseCase = new GetDishUseCase(this.dishRepositoryImplementation);
+
         this.setUpRoutes();
     }
 
@@ -44,6 +48,17 @@ export default class DishRouter implements RouterPattern {
                 const categories = await this.getCategoriesUseCase.execute(restaurantId);
                 const dishes = await this.getAllDishesUseCase.execute(categories);
                 return res.status(200).json(dishes);
+            }catch(error){
+                console.error(error);
+                return res.status(200).json(error);
+            }
+        });
+
+        this.router.get('/get/:dishId', authenticateRestaurant, async (req: any, res: any) => {
+            try{
+                const { dishId } = req.params;
+                const dishEntity = await this.getDishUseCase.execute(dishId);
+                return res.status(200).json(dishEntity);
             }catch(error){
                 console.error(error);
                 return res.status(200).json(error);
