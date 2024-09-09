@@ -50,7 +50,7 @@ export default class CategoryRouter {
             }
         });
         
-        this.router.use('/get-image', authenticateRestaurant, express.static('images/categories'));
+        this.router.use('/get-image', express.static('images/categories'));
 
         this.router.post('/upload-image/:categoryId', authenticateRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
             try {
