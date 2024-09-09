@@ -5,6 +5,15 @@ import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 export default class CategoryRepositoryImplementation implements CategoryRepository {
     models: any = SequelizeSetUp.getModels();
 
+    async updateImage(categoryId: number, image: string): Promise<void> {
+        try{
+            await this.models.Category.update({ image }, { where: { categoryId } }); 
+        }catch(error){
+            console.error(error);
+            throw error;
+        }
+    }
+
     async getById(categoryId: number, restaurantId: number): Promise<CategoryEntity> {
         const category = await this.models.Category.findOne({
             where: { categoryId, restaurantId },

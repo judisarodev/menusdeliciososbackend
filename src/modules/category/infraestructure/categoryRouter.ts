@@ -8,6 +8,7 @@ import RestaurantRepositoryImplementation from '../../restaurant/infraestructure
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import UpdateImageUseCase from '../application/updateImageUseCase';
 
 export default class CategoryRouter {
     router: Router;
@@ -15,6 +16,7 @@ export default class CategoryRouter {
     getCategoriesUseCase: GetCategoriesUseCase;    
     createCategoryUseCase: CreateCategoryUseCase;
     restaurantRepositoryImplementation: RestaurantRepositoryImplementation;
+    updateImageUseCase: UpdateImageUseCase;
     storage: any;
     uploadMiddleware: any;
         
@@ -32,6 +34,7 @@ export default class CategoryRouter {
         // Category Use Cases Instances
         this.getCategoriesUseCase = new GetCategoriesUseCase(this.categoryRepositoryImplementation);
         this.createCategoryUseCase = new CreateCategoryUseCase(this.categoryRepositoryImplementation);
+        this.updateImageUseCase = new UpdateImageUseCase(this.categoryRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -47,11 +50,12 @@ export default class CategoryRouter {
             }
         });
         
-        this.router.use('/get-image', express.static('images/categories'));
+        this.router.use('/get-image', authenticateRestaurant, express.static('images/categories'));
 
-        this.router.post('/upload-image', this.uploadMiddleware.single('image'), async (req: any, res: any) => {
+        this.router.post('/upload-image/:categoryId', authenticateRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
             try {
-
+                const { categoryId } = req.params;
+                await this.updateImageUseCase.execute(categoryId, req.file.filename);
                 res.send({
                     message: 'Imagen cargada correctamente',
                     file: req.file
