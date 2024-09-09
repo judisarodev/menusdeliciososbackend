@@ -105,10 +105,11 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.get('/delete', async (req: any, res: any) => {
+        this.router.delete('/delete', async (req: any, res: any) => {
             try{
-                //const dishes = await this.getAllDishesUseCase.execute();
-                return res.status(200).json({ message: 'Servicio no implementado' });
+                const { dishId } = req.body;
+                const deletedDish = await this.deleteDishUseCase.execute(dishId);
+                return res.status(200).json({ message: 'El plato ha sido eliminado', deletedDish });
             }catch(error){
                 console.error(error);
                 return res.status(200).json(error); 

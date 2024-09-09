@@ -84,7 +84,12 @@ export class DishRepositoryImplementation implements DishRepository{
     }
 
     async delete(dishId: number): Promise<DishEntity> {
-        return await this.models.delete({ where: { dishId }, force: true });
+        try{
+            return await this.models.Product.destroy({ where: { productId: dishId }, force: true });
+        }catch(error){
+            console.error(error);
+            throw error;
+        }
     }
 
 }
