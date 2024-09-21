@@ -9,11 +9,11 @@ const authenticateRestaurant = async (req: any, res: any, next: any) => {
         if (!token) {
             return res.status(401).json({ message: 'Petición sin token de verificación' });
         }
-        const payload = await authenticationPatternImplementation.verifyToken(token);
-        if(!payload || !payload.restaurantId){
+        const payload = authenticationPatternImplementation.verifyToken(token);
+        if(!payload || !payload.sub){
             return res.status(401).json({ message: 'Payload requerido no fue proporcionado' });
         }
-        req.restaurantId = payload.restaurantId;
+        req.restaurantId = payload.sub;
         next();
     }catch(error){
         console.error(error);

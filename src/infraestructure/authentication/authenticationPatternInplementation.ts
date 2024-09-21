@@ -1,32 +1,24 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import AuthenticationPattern from "../../domain/authenticationPattern";
-import { jwtVerify, SignJWT } from 'jose'
+import jwt from "jsonwebtoken";
+
+
 
 export default class AuthenticationPatternImplementation implements AuthenticationPattern {
 
-    private secret: any = new TextEncoder().encode(process.env.SECRET || 'secret'); 
-    private algorithm: string = 'HS256'; 
+    private SECRET: any = new TextEncoder().encode(process.env.SECRET); 
 
-    async signToken(restaurantId: number): Promise<string> {
-        const jwt = await new SignJWT({ restaurantId })
-            .setProtectedHeader({ alg: this.algorithm })
-            .setIssuedAt()
-            .setIssuer('menusdeliciosos')
-            .setAudience('restaurant')
-            .setExpirationTime('2h')
-            .sign(this.secret);
-
-        console.log('Secret', process.env.SECRET);
-        return jwt;
+    signToken(restaurantId: number): any {
+        const payload = {
+            sub: restaurantId,
+            expiresIn: '1h'
+        }
+        return jwt.sign(payload, this.SECRET);
     }
 
-    async verifyToken(token: string): Promise<any> {
-        const { payload } = await jwtVerify(token, this.secret);
-        if(payload){
-            return payload;
-        }
-        return false;
+    verifyToken(token: string): any{
+        return jwt.verify(token, this.SECRET);
     }
 
 }

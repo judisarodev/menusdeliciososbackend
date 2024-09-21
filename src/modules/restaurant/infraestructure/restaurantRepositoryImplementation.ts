@@ -52,53 +52,58 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
     }
     
     async getById(restaurantId: number): Promise<RestaurantEntity> {
-        const restaurant = await this.models.Restaurant.findOne({
-            where: { restaurantId },
-            attributes: ['restaurantId', 'name', 'email', 'password', 'logo'],
-            include: [{
-                model: this.models.Phone,
-                as: 'phone',
+        try{
+            const restaurant = await this.models.Restaurant.findOne({
+                where: { restaurantId },
+                attributes: ['restaurantId', 'name', 'email', 'password', 'logo'],
                 include: [{
-                    model: this.models.PhoneCode,
-                    as: 'phoneCode'
+                    model: this.models.Phone,
+                    as: 'phone',
+                    include: [{
+                        model: this.models.PhoneCode,
+                        as: 'phoneCode'
+                    }]
+                }, {
+                    model: this.models.Address,
+                    as: 'address'
+                }, {
+                    model: this.models.RestaurantType,
+                    as: 'restaurantType'
                 }]
-            }, {
-                model: this.models.Address,
-                as: 'address'
-            }, {
-                model: this.models.RestaurantType,
-                as: 'restaurantType'
-            }]
-        });
-
-        const phoneCodeEntity = new PhoneCodeEntity(
-            restaurant.phone.phoneCode.code, 
-            restaurant.phone.phoneCode.country, 
-            restaurant.phone.phoneCode.phoneCodeId);
-
-        const phoneEntity = new PhoneEntity(
-            restaurant.phone.phoneNumber, 
-            phoneCodeEntity, 
-            restaurant.phone.phoneId);
-
-        const addressEntity = new AddressEntity(
-            restaurant.address.address, 
-            restaurant.address.addressDetails, 
-            restaurant.address.addressId);
-
-        const restaurantTypeEntity = new RestaurantTypeEntity(
-            restaurant.restaurantType.name, 
-            restaurant.restaurantType.restaurantTypeId);
-
-        const restaurantEntity = new RestaurantEntity(
-            restaurant.name, restaurant.email, 
-            restaurant.password, restaurant.logo, restaurantId);
-        
-        restaurant.setPhone(phoneEntity);
-        restaurant.setAddress(addressEntity);
-        restaurant.setRestaurantType(restaurantTypeEntity); 
-
-        return restaurantEntity;
+            });
+    
+            const phoneCodeEntity = new PhoneCodeEntity(
+                restaurant.phone.phoneCode.code, 
+                restaurant.phone.phoneCode.country, 
+                restaurant.phone.phoneCode.phoneCodeId);
+    
+            const phoneEntity = new PhoneEntity(
+                restaurant.phone.phoneNumber, 
+                phoneCodeEntity, 
+                restaurant.phone.phoneId);
+    
+            const addressEntity = new AddressEntity(
+                restaurant.address.address, 
+                restaurant.address.addressDetails, 
+                restaurant.address.addressId);
+    
+            const restaurantTypeEntity = new RestaurantTypeEntity(
+                restaurant.restaurantType.name, 
+                restaurant.restaurantType.restaurantTypeId);
+    
+            const restaurantEntity = new RestaurantEntity(
+                restaurant.name, restaurant.email, 
+                restaurant.password, restaurant.logo, restaurantId);
+            
+            restaurantEntity.setPhone(phoneEntity);
+            restaurantEntity.setAddress(addressEntity);
+            restaurantEntity.setRestaurantType(restaurantTypeEntity); 
+    
+            return restaurantEntity;
+        }catch(error){
+            console.error(error)
+            throw error;
+        }
     }
 
 }
