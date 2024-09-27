@@ -14,7 +14,7 @@ export default class CreateRestaurantUseCase {
         private phoneRepositoryImplementation: PhoneRepositoryImplementation,
     ){}
 
-    async execute(restaurant: RestaurantEntity, phoneInfo: any, addressInfo: any, restaurantTypeInfo: any){
+    async execute(restaurant: RestaurantEntity, phoneInfo: any, addressInfo: any, restaurantTypeInfo: any, password: string){
         const { phoneNumber, poneCode } = phoneInfo;
         const { code, country, phoneCodeId } = poneCode;
         const { address, addressDetails } = addressInfo;
@@ -33,6 +33,6 @@ export default class CreateRestaurantUseCase {
         restaurant.setAddress(addressEntity);
         restaurant.setPhone(phoneEntity);
         restaurant.setRestaurantType(restaurantTypeEntity); 
-        this.restaurantRepositoryImplementation.create(restaurant);
+        this.restaurantRepositoryImplementation.create(restaurant, password);
     }
 }

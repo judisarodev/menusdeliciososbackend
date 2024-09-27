@@ -6,17 +6,15 @@ export default class RestaurantEntity {
     private restaurantId: number | undefined;
     private name: string;
     private email: string;
-    private password: string;
     private logo: string;
     private phone: PhoneEntity | undefined; 
     private address: AddressEntity | undefined;
     private restaurantType: RestaurantTypeEntity | undefined;
 
-    constructor(name: string, email: string, password: string, logo: string, restaurantId?: number){
+    constructor(name: string, email: string, logo: string, restaurantId?: number){
         this.restaurantId = restaurantId;
         this.name = name; 
         this.email = email;
-        this.password = password;
         this.logo = logo;
     }
 
@@ -30,10 +28,6 @@ export default class RestaurantEntity {
 
     getEmail(): string {
         return this.email; 
-    }
-
-    getPassword(): string {
-        return this.password;
     }
 
     getLogo(): string {

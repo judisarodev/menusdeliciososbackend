@@ -33,9 +33,9 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         };
     }
 
-    async create(restaurantEntity: RestaurantEntity): Promise<void> {
+    async create(restaurantEntity: RestaurantEntity, password: string): Promise<void> {
         try{
-            const hashedPassword = await bcrypt.hash(restaurantEntity.getPassword(), 10); 
+            const hashedPassword = await bcrypt.hash(password, 10); 
 
             await this.models.Restaurant.create({
                 name: restaurantEntity.getName(),
@@ -55,7 +55,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         try{
             const restaurant = await this.models.Restaurant.findOne({
                 where: { restaurantId },
-                attributes: ['restaurantId', 'name', 'email', 'password', 'logo'],
+                attributes: ['restaurantId', 'name', 'email', 'logo'],
                 include: [{
                     model: this.models.Phone,
                     as: 'phone',
@@ -92,8 +92,11 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 restaurant.restaurantType.restaurantTypeId);
     
             const restaurantEntity = new RestaurantEntity(
-                restaurant.name, restaurant.email, 
-                restaurant.password, restaurant.logo, restaurantId);
+                restaurant.name, 
+                restaurant.email, 
+                restaurant.logo, 
+                restaurantId
+            );
             
             restaurantEntity.setPhone(phoneEntity);
             restaurantEntity.setAddress(addressEntity);
