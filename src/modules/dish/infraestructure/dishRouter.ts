@@ -42,6 +42,37 @@ export default class DishRouter implements RouterPattern {
     }
 
     setUpRoutes(){
+        /**
+         * @swagger
+         * /api/dish/get-all:
+         *   get:
+         *      summary: Get all dishes on a restaurant
+         *      tags:
+         *          - Dish
+         *      security:
+         *          - BearerAuth: []
+         *      responses:
+         *          200:
+         *              description: Sucess
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties: 
+         *                              dishId: 
+         *                                  type: number
+         *                                  example: 1
+         *          500:
+         *              description: Internal server error
+         *              content:
+         *                  application/json:
+         *                      schema:
+         *                          type: object
+         *                          properties:
+         *                              message:
+         *                                  type: string
+         *                                  example: "No ha sido posible consultar los platos del restaurante"
+         */
         this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;
@@ -50,7 +81,7 @@ export default class DishRouter implements RouterPattern {
                 return res.status(200).json(dishes);
             }catch(error){
                 console.error(error);
-                return res.status(200).json(error);
+                return res.status(200).json({ message: 'No ha sido posible consultar los platos del restaurante' });
             }
         });
 

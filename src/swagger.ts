@@ -15,6 +15,19 @@ const swaggerOptions: any = {
         },
       ],
     },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'Bearer',
+          bearerFormat: 'JWT',
+        },
+        BasicAuth: {
+          type: 'http',
+          scheme: 'Basic',
+        },
+      },
+    }
   },
   apis: ['./**/*.ts'], 
 };

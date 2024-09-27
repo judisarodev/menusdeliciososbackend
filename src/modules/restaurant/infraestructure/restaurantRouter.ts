@@ -39,9 +39,10 @@ export default class RestaurantRouter implements RouterPattern {
          * /api/restaurant/login:
          *   post:
          *     summary: User authentication
-         *     description: It returns a JWT for further API usage.
          *     tags:
          *          - Restaurant
+         *     security:
+         *          - BasicAuth: []
          *     responses:
          *          200:
          *              description: Sucessfull authentication
@@ -88,19 +89,42 @@ export default class RestaurantRouter implements RouterPattern {
                     const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
                     return res.status(200).json({ message: 'Has iniciado sesión exitosamente', jwt });
                 }
-                return res.status(401).json({ message: 'Credenciales incorrectas'});
+                return res.status(401).json({ message: 'Credenciales incorrectas' });
             } catch (error) {
                 console.error(error);
-                return res.status(500).json({ message: 'Hubo un error al iniciar sesión'});
+                return res.status(500).json({ message: 'Hubo un error al iniciar sesión' });
             }
         });
 
+        /**
+         * @swagger
+         * /api/restaurant/create:
+         *   post:
+         *     summary: Create a restaurant account
+         *     tags:
+         *       - Restaurant
+         *     security:
+         *       - BearerAuth: []
+         *     responses:
+         *       201:
+         *         description: Success
+         *         content:
+         *           application/json:
+         *             schema:
+         *               type: object
+         *               properties:
+         *                 message:
+         *                   type: string
+         *                   example: "Restaurante creado exitosamente"
+         *       500:
+         *         description: Internal server error
+         */
         this.router.post('/create', async (req: any, res: any) => {
             try {
                 const { name, email, password, logo, phoneInfo, addressInfo, restaurantTypeInfo } = req.body;
                 const restaurantEntity = new RestaurantEntity(name, email, logo);
                 await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo, password);
-                return res.status(200).json({ message: 'Restaurante creado exitosamente' });
+                return res.status(201).json({ message: 'Restaurante creado exitosamente.' });
             } catch (error) {
                 console.error(error);
                 return res.status(500).json(error);
@@ -112,9 +136,10 @@ export default class RestaurantRouter implements RouterPattern {
          * /api/restaurant/get:
          *   get:
          *      summary: Get a restaurant
-         *      description: Gets all the restaurant information
          *      tags:
          *          - Restaurant
+         *      security:
+         *          - BearerAuth: []
          *      responses:
          *          200:
          *              description: Succeess
@@ -164,8 +189,8 @@ export default class RestaurantRouter implements RouterPattern {
                     name: restaurant.getName(),
                     email: restaurant.getEmail(),
                     logo: restaurant.getLogo(),
-                    phone: `${ restaurant.getPhone()?.getPhoneCode().getCode() } ${ restaurant.getPhone()?.getPhoneNumber() }`,
-                    address: `${ restaurant.getAddress()?.getAddress() } - ${ restaurant.getAddress()?.getAddressDetails() }`,
+                    phone: `${restaurant.getPhone()?.getPhoneCode().getCode()} ${restaurant.getPhone()?.getPhoneNumber()}`,
+                    address: `${restaurant.getAddress()?.getAddress()} - ${restaurant.getAddress()?.getAddressDetails()}`,
                     restaurantType: restaurant.getRestaurantType()?.getName(),
                 });
             } catch (error) {
