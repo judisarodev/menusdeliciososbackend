@@ -5,7 +5,7 @@ import CreatePhoneUseCase from '../application/createPhoneUseCase';
 import PhoneRepositoryImplementation from './phoneRepositoryImplementation';
 import PhoneEntity from '../domain/phoneEntity';
 import PhoneCodeEntity from '../../phone_code/phoneCodeEntity';
-import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 
 export default class PhoneRouter implements RouterPattern {
     router: Router;
@@ -23,7 +23,7 @@ export default class PhoneRouter implements RouterPattern {
     }
 
     setUpRoutes(): void {
-        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { phoneNumber, phoneCode } = req.body;
                 const { code, country, phoneCodeId } = phoneCode;
@@ -39,7 +39,7 @@ export default class PhoneRouter implements RouterPattern {
             }
         });
 
-        this.router.patch('/update', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.patch('/update', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { phoneId, data } = req.body;
                 const wasUpdated = await this.updatePhoneUseCase.execute(data, phoneId);

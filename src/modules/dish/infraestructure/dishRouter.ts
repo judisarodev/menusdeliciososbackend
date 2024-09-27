@@ -8,7 +8,7 @@ import CategoryRepositoryImplementation from '../../category/infraestructure/cat
 import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUseCase';
 import { DishEntity } from '../domain/dishEntity';
 import RouterPattern from '../../../domain/routerPattern';
-import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import GetCategoriesUseCase from '../../category/application/getCategoriesUseCase';
 import GetDishUseCase from '../application/getDishUseCase';
 
@@ -42,7 +42,7 @@ export default class DishRouter implements RouterPattern {
     }
 
     setUpRoutes(){
-        this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;
                 const categories = await this.getCategoriesUseCase.execute(restaurantId);
@@ -54,7 +54,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.get('/get/:dishId', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.get('/get/:dishId', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { dishId } = req.params;
                 const dishEntity = await this.getDishUseCase.execute(dishId);
@@ -65,7 +65,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{           
                 const restaurantId = req.restaurantId;
                 const { categoryId, name, price, description, image } = req.body;
@@ -94,7 +94,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.patch('/update', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.patch('/update', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { dishId, data } = req.body;
                 await this.updateDishUseCase.execute(dishId, data);

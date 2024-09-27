@@ -2,7 +2,7 @@ import AuthenticationPatternImplementation from '../infraestructure/authenticati
 
 const authenticationPatternImplementation = new AuthenticationPatternImplementation();
 
-const authenticateRestaurant = async (req: any, res: any, next: any) => {
+const authorizeRestaurant = async (req: any, res: any, next: any) => {
     try {
         const authorizationHeader = req.headers['authorization'];
         const token = authorizationHeader && authorizationHeader.split(' ')[1];
@@ -21,4 +21,4 @@ const authenticateRestaurant = async (req: any, res: any, next: any) => {
     }
 }
 
-export default authenticateRestaurant;
+export default authorizeRestaurant;

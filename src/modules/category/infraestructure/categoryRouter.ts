@@ -3,7 +3,7 @@ import CategoryRepositoryImplementation from './categoryRepositoryImplementation
 import GetCategoriesUseCase from '../application/getCategoriesUseCase';
 import CreateCategoryUseCase from '../application/createCategoryUseCase';
 import { CategoryEntity } from '../domain/categoryEntity';
-import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import RestaurantRepositoryImplementation from '../../restaurant/infraestructure/restaurantRepositoryImplementation';
 import multer from 'multer';
 import path from 'path';
@@ -39,7 +39,7 @@ export default class CategoryRouter {
     }
 
     setUpRoutes(){
-        this.router.get('/get-all', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;
                 const categories = await this.getCategoriesUseCase.execute(restaurantId);
@@ -52,7 +52,7 @@ export default class CategoryRouter {
         
         this.router.use('/get-image', express.static('images/categories'));
 
-        this.router.post('/upload-image/:categoryId', authenticateRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
+        this.router.post('/upload-image/:categoryId', authorizeRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
             try {
                 const { categoryId } = req.params;
                 await this.updateImageUseCase.execute(categoryId, req.file.filename);
@@ -65,7 +65,7 @@ export default class CategoryRouter {
             }
         });
 
-        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;    
                 const { name, image, icon } = req.body;

@@ -4,12 +4,8 @@ import RestaurantRepositoryImplementation from './restaurantRepositoryImplementa
 import CreateRestaurantUseCase from '../application/createRestaurantUseCase';
 import GetRestaurantByIdUseCase from '../application/getRestaurantByIdUseCase';
 import RestaurantEntity from '../domain/restaurantEntity';
-import PhoneEntity from '../../phone/domain/phoneEntity';
-import AddressEntity from '../../address/domain/addressEntity';
-import RestaurantTypeEntity from '../../restaurant_type/domain/restaurantTypeEntity';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
-import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
-import SequelizeSetUp from '../../../infraestructure/config/sequelize';
+import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
 import PhoneRepositoryImplementation from '../../phone/infraestructure/phoneRepositoryImplementation';
 
@@ -38,6 +34,18 @@ export default class RestaurantRouter implements RouterPattern {
     }
 
     setUpRoutes(): void {
+        /**
+         * @swagger
+         * /api/restaurant/login:
+         *   post:
+         *     summary: User authentication
+         *     description: It returns a JWT for further API usage.
+         *     tags:
+         *          - Restaurant
+         *     responses:
+         *          200:
+         *          description: Sucessfull authentication
+        */
         this.router.post('/login', async (req: any, res: any) => {
             try {
                 const { email, password } = req.body;
@@ -65,23 +73,11 @@ export default class RestaurantRouter implements RouterPattern {
             }
         });
 
-        this.router.get('/get', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.get('/get', authorizeRestaurant, async (req: any, res: any) => {
             try {
                 const restaurantId = req.restaurantId;
                 const restaurantEntity = await this.getRestaurantByIdUseCase.execute(restaurantId);
                 return res.status(200).json(restaurantEntity);
-            } catch (error) {
-                console.error(error);
-                return res.status(500).json(error);
-            }
-        });
-
-        this.router.post('create', async (req: any, res: any) => {
-            try {
-                const { name, email, password, logo, phoneInfo, addressInfo, restaurantTypeInfo } = req.body;
-                const restaurantEntity = new RestaurantEntity(name, email, password, logo);
-                const createdRestaurant = await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo);
-                res.status(201).json(createdRestaurant);
             } catch (error) {
                 console.error(error);
                 return res.status(500).json(error);

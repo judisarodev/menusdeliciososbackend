@@ -4,7 +4,7 @@ import AddressRepositoryImplementation from './addressRepositoryImplementation';
 import UpdateAddressUseCase from '../application/updateAddressUseCase';
 import CreateAddressUseCase from '../application/createAddressUseCase';
 import AddressEntity from '../domain/addressEntity';
-import authenticateRestaurant from '../../../middlewares/authenticateRestaurantMiddleware';
+import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 
 export default class AddressRouter implements RouterPattern {
     router: Router;
@@ -21,7 +21,7 @@ export default class AddressRouter implements RouterPattern {
     }
 
     setUpRoutes(): void {
-        this.router.post('/create', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { address, addressDetails } = req.body;
 
@@ -35,7 +35,7 @@ export default class AddressRouter implements RouterPattern {
             }
         });
 
-        this.router.patch('/update', authenticateRestaurant, async (req: any, res: any) => {
+        this.router.patch('/update', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { addressId, data } = req.body;
                 const wasUpdated = await this.updateAddressUseCase.execute(data, addressId);
