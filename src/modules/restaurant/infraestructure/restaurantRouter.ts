@@ -44,7 +44,35 @@ export default class RestaurantRouter implements RouterPattern {
          *          - Restaurant
          *     responses:
          *          200:
-         *          description: Sucessfull authentication
+         *              description: Sucessfull authentication
+         *              content:
+         *                  application/json:
+         *                      schema: 
+         *                          type: object
+         *                          properties:
+         *                              message:
+         *                                  type: string
+         *                                  description: "sucess"
+         *                              jwt:
+         *                                  type: string
+         *          401:
+         *              description: Incorrect credentials
+         *              content:
+         *                  application/json:
+         *                      schema: 
+         *                          type: object
+         *                          properties:
+         *                              message:
+         *                                  type: string
+         *          500: 
+         *              description: Internal server error
+         *              content:
+         *                  application/json:
+         *                      schema: 
+         *                          type: object
+         *                          properties:
+         *                              message:
+         *                                  type: string
         */
         this.router.post('/login', async (req: any, res: any) => {
             try {
@@ -53,14 +81,14 @@ export default class RestaurantRouter implements RouterPattern {
                 const credentials = Buffer.from(token, 'base64').toString('ascii');
                 const [email, password] = credentials.split(':');
                 const { isVerified, restaurantId } = await this.restaurantRepositoryImplementation.login(email, password);
-                if (isVerified) {
+                if (isVerified === true) {
                     const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
-                    return res.status(200).json({ message: 'Has iniciado sesión exitosamente', isVerified, jwt });
+                    return res.status(200).json({ message: 'Has iniciado sesión exitosamente', jwt });
                 }
-                return res.status(401).json({ message: 'Credenciales incorrectas', isVerified });
+                return res.status(401).json({ message: 'Credenciales incorrectas'});
             } catch (error) {
                 console.error(error);
-                return res.status(500).json({ message: 'Hubo un error al iniciar sesión', isVerified: false });
+                return res.status(500).json({ message: 'Hubo un error al iniciar sesión'});
             }
         });
 
