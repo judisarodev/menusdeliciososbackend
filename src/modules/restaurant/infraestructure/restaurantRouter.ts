@@ -48,7 +48,10 @@ export default class RestaurantRouter implements RouterPattern {
         */
         this.router.post('/login', async (req: any, res: any) => {
             try {
-                const { email, password } = req.body;
+                const authorizationHeaders = req.headers['authorization'];
+                const token = authorizationHeaders.split(' ')[1];
+                const credentials = Buffer.from(token, 'base64').toString('ascii');
+                const [email, password] = credentials.split(':');
                 const { isVerified, restaurantId } = await this.restaurantRepositoryImplementation.login(email, password);
                 if (isVerified) {
                     const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
