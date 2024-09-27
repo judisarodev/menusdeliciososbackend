@@ -45,7 +45,7 @@ export default class RestaurantRouter implements RouterPattern {
          *          - BasicAuth: []
          *     responses:
          *          200:
-         *              description: Sucessfull authentication
+         *              description: Successfull authentication
          *              content:
          *                  application/json:
          *                      schema: 
@@ -103,6 +103,61 @@ export default class RestaurantRouter implements RouterPattern {
          *     summary: Create a restaurant account
          *     tags:
          *       - Restaurant
+         *     requestBody:
+         *       required: true
+         *       content:
+         *         application/json:
+         *            schema:
+         *              type: object
+         *              properties:
+         *                name:
+         *                  type: string
+         *                  example: "Pizza Arriba"
+         *                email:
+         *                  type: string
+         *                  example: "pizza-arriba@mail.com"
+         *                password:
+         *                  type: string
+         *                  example: "super-secure-password"
+         *                logo:
+         *                  type: string
+         *                  example: "https://images.com/route-to-image"
+         *                phoneInfo:
+         *                  type: object
+         *                  properties:
+         *                    phoneNumber: 
+         *                      type: string
+         *                      example: "3158883333"
+         *                    phoneCode:
+         *                      type: object
+         *                      properties:
+         *                        code:
+         *                          type: string
+         *                          example: "+57"
+         *                        country:
+         *                          type: "string"
+         *                          example: "Colombia"
+         *                        phoneCodeId: 
+         *                          type: number
+         *                          example: 1
+         *                addressInfo:
+         *                  type: object
+         *                  properties:
+         *                    address:
+         *                      type: string
+         *                      example: "Carrera 100 no 10 - 1"
+         *                    addressDetails: 
+         *                      type: string
+         *                      example: "Torre 2 apartamento 101"
+         *                restaurantTypeInfo:
+         *                  type: object
+         *                  properties:
+         *                    restaurantTypeName:
+         *                      type: string
+         *                      example: "Comida rápida"
+         *                    restaurantTypeId: 
+         *                      type: integer
+         *                      example: 1
          *     security:
          *       - BearerAuth: []
          *     responses:

@@ -85,17 +85,126 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
+        /**
+         * @swagger
+         * /api/get/{dishId}:
+         *   post:
+         *     summary: User authentication
+         *     tags:
+         *          - Dish
+         *     security:
+         *          - BasicAuth: []
+         *     parameters:
+         *          - in: path  
+         *            name: dishId
+         *            schema:
+         *              type: integer
+         *            required: true
+         *            description: Dish ID
+         *     responses:
+         *          200:
+         *              description: Success
+         *              content:
+         *                  application/json:
+         *                      schema: 
+         *                          type: object
+         *                          properties:
+         *                              name:
+         *                                  type: string
+         *                                  example: "Pizza doble"
+         *                              price:
+         *                                  type: number
+         *                                  example: 32000
+         *                              description:
+         *                                  type: string
+         *                                  example: "Deliciosa pizza doble"
+         *                              image: 
+         *                                  type: string
+         *                                  example: "https://image.com/route-to-image"
+         *                              category:
+         *                                  type: string
+         *                                  example: "Pizzas"
+         *          500: 
+         *              description: Internal server error
+         *              content:
+         *                  application/json:
+         *                      schema: 
+         *                          type: object
+         *                          properties:
+         *                              message:
+         *                                  type: string
+         *                                  example: "Hubo un error al concultar el plato"
+        */
         this.router.get('/get/:dishId', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { dishId } = req.params;
-                const dishEntity = await this.getDishUseCase.execute(dishId);
-                return res.status(200).json(dishEntity);
+                const dish = await this.getDishUseCase.execute(dishId);
+                return res.status(200).json({
+                    name: dish.getName(),
+                    price: dish.getPrice(),
+                    description: dish.getDescription(),                
+                    image: dish.getImage(),
+                    category: dish.getCategory()?.getName(),
+                });
             }catch(error){
                 console.error(error);
-                return res.status(200).json(error);
+                return res.status(200).json({ message: 'Hubo un error al concultar el plato' });
             }
         });
 
+        /**
+         * @swagger
+         * /api/dish/create:
+         *   post:
+         *     summary: Create a dish
+         *     tags:
+         *       - Dish
+         *     requestBody:
+         *       required: true
+         *       content:
+         *         application/json:
+         *           schema:
+         *             type: object
+         *             properties:
+         *               name:
+         *                 type: string
+         *                 example: "Pizza doble"
+         *               price:
+         *                 type: number
+         *                 example: 32000
+         *               description:
+         *                 type: string
+         *                 example: "Deliciosa pizza doble"
+         *               image: 
+         *                 type: string
+         *                 example: "https://image.com/route-to-image"
+         *               categoryId:
+         *                 type: integer
+         *                 example: 1
+         *     security:
+         *       - BearerAuth: []
+         *     responses:
+         *       201:
+         *         description: Success
+         *         content:
+         *           application/json:
+         *             schema:
+         *               type: object
+         *               properties:
+         *                 message:
+         *                   type: string
+         *                   example: "Plato creado exitosamente"
+         *       500:
+         *         description: Internal server error
+         *         content:
+         *           application/json:
+         *             schema: 
+         *               type: object
+         *               properties:
+         *                 message:
+         *                   type: string
+         *                   example: "No fue posible crear el plato"
+         */
         this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{           
                 const restaurantId = req.restaurantId;
@@ -104,24 +213,13 @@ export default class DishRouter implements RouterPattern {
                 if(categoryEntity){
                     const dishEntity = new DishEntity(name, price, description, image);
                     dishEntity.setCategory(categoryEntity);
-                    const createdDish = await this.createDishUseCase.execute(dishEntity);
-                    return res.status(200).json({
-                        description: dishEntity.getDescription(),
-                        name: dishEntity.getName(),
-                        price: dishEntity.getPrice(),
-                        image: dishEntity.getImage(),
-                        category: {
-                            categoryId: categoryEntity.getCategoryId(),
-                            name: categoryEntity.getName(),
-                            image: categoryEntity.getImage(),
-                            icon: categoryEntity.getIcon(),
-                        }
-                    });
+                    await this.createDishUseCase.execute(dishEntity);
+                    return res.status(200).json({ message: 'Plato creado con éxito' });
                 }
-                return res.status(200).json({ message: 'No fue posible insertar el producto' });
+                return res.status(500).json({ message: 'No fue posible crear el plato' });
             }catch(error){
                 console.error(error);
-                return res.status(200).json(error);
+                return res.status(500).json({ message: 'No fue posible crear el plato' });
             }
         });
 
