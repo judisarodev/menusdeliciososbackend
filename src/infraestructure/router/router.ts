@@ -28,7 +28,15 @@ export default class Router implements RouterPattern{
     }
 
     setUpRoutes(){
-        
+        /**
+         * @swagger
+         * /api/login:
+         *   get:
+         *     summary: Retorna un mensaje de saludo
+         *     responses:
+         *       200:
+         *         description: Éxito
+        */
         this.router.use('/dish', this.dishRouter.getRouter());
         this.router.use('/category', this.categoryRouter.getRouter());
         this.router.use('/restaurant-type', this.restaurantTypeRouter.getRouter());
