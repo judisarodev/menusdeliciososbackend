@@ -1,21 +1,22 @@
 import AddressEntity from "../../address/domain/addressEntity";
-import PhoneEntity from "../../phone/domain/phoneEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 
 export default class RestaurantEntity {
     private restaurantId: number | undefined;
     private name: string;
     private email: string;
-    private logo: string;
-    private phone: PhoneEntity | undefined; 
-    private address: AddressEntity | undefined;
-    private restaurantType: RestaurantTypeEntity | undefined;
+    private logo: string = '';
+    private phoneNumber: string; 
 
-    constructor(name: string, email: string, logo: string, restaurantId?: number){
+    private restaurantType: RestaurantTypeEntity | undefined;
+    private addresses: AddressEntity[] = [];
+    
+
+    constructor(name: string, email: string, phoneNumber:string, restaurantId?: number){
         this.restaurantId = restaurantId;
         this.name = name; 
         this.email = email;
-        this.logo = logo;
+        this.phoneNumber = phoneNumber;
     }
 
     getRestaurantId(): number | undefined {
@@ -34,27 +35,27 @@ export default class RestaurantEntity {
         return this.logo;
     }
 
-    getPhone(): PhoneEntity | undefined {
-        return this.phone;
-    }
-
-    getAddress(): AddressEntity | undefined {
-        return this.address;
+    getPhone(): string{
+        return this.phoneNumber;
     }
 
     getRestaurantType(): RestaurantTypeEntity | undefined {
         return this.restaurantType; 
     }
 
-    setPhone(phoneEntity: PhoneEntity): void {
-        this.phone = phoneEntity;
-    }
-
-    setAddress(address: AddressEntity){
-        this.address = address;
+    setPhone(phoneNumber: string): void {
+        this.phoneNumber = phoneNumber;
     }
 
     setRestaurantType(restaurantType: RestaurantTypeEntity){
         this.restaurantType = restaurantType; 
+    }
+
+    setAddresses(addresses: AddressEntity[]){
+        this.addresses = addresses;
+    }
+
+    getAddresses(): AddressEntity[]{
+        return this.addresses;
     }
 }

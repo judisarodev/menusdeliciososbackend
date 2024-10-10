@@ -1,22 +1,25 @@
 import { DataTypes } from "sequelize";
 
-export default class PhoneCodeModel {
-    static tableName: string = 'phone_codes';
-    static modelName: string = 'PhoneCode';
+export default class CountryModel {
+    static tableName: string = 'countries';
+    static modelName: string = 'Country';
+
     static schema: any = {
-        phoneCodeId: {
-            field: 'phone_code_id',
+        countryId: {
+            field: 'country_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
             autoIncrement: true,
         },
-        code: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        country: {
+        phoneCode: {
+            field: 'phone_code',
             type: DataTypes.STRING,
+            allowNull: false,
         }
     };
     static options: any = {

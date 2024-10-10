@@ -1,7 +1,5 @@
 import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 import AddressEntity from "../../address/domain/addressEntity";
-import PhoneEntity from "../../phone/domain/phoneEntity";
-import PhoneCodeEntity from "../../phone_code/phoneCodeEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 import RestaurantEntity from "../domain/restaurantEntity";
 import RestaurantRepository from "../domain/restaurantRepository";
@@ -41,8 +39,6 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 name: restaurantEntity.getName(),
                 email: restaurantEntity.getEmail(),
                 password: hashedPassword,
-                phoneId: restaurantEntity.getPhone()?.getPhoneId(),
-                addressId: restaurantEntity.getAddress()?.getAddressId(),
                 restaurantTypeId: restaurantEntity.getRestaurantType()?.getRestaurantTypeId()
             });
         }catch(error){
@@ -72,16 +68,6 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 }]
             });
     
-            const phoneCodeEntity = new PhoneCodeEntity(
-                restaurant.phone.phoneCode.code, 
-                restaurant.phone.phoneCode.country, 
-                restaurant.phone.phoneCode.phoneCodeId);
-    
-            const phoneEntity = new PhoneEntity(
-                restaurant.phone.phoneNumber, 
-                phoneCodeEntity, 
-                restaurant.phone.phoneId);
-    
             const addressEntity = new AddressEntity(
                 restaurant.address.address, 
                 restaurant.address.addressDetails, 
@@ -97,9 +83,6 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 restaurant.logo, 
                 restaurantId
             );
-            
-            restaurantEntity.setPhone(phoneEntity);
-            restaurantEntity.setAddress(addressEntity);
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 
     
             return restaurantEntity;

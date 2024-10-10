@@ -1,26 +1,28 @@
 import { DataTypes } from "sequelize";
 
-export default class AddressModel {
-    static tableName: string = 'addresses';
-    static modelName: string = 'Address';
+export default class SurveyModel {
+    static tableName: string = 'surveys';
+    static modelName: string = 'Survey';
+
     static schema: any = {
-        addressId: {
-            field: 'address_id',
+        surveyId: {
+            field: 'survey_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
             autoIncrement: true,
         },
-        address: {
-            type: DataTypes.STRING,
+        score: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        details: {
+        comments: {
             type: DataTypes.STRING,
         },
         restaurantId: {
-            type: DataTypes.INTEGER,
             field: 'restaurant_id',
+            type: DataTypes.INTEGER,
+            allowNull: false,
         }
     };
     static options: any = {

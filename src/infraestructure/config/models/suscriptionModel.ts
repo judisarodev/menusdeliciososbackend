@@ -1,44 +1,42 @@
 import { DataTypes } from "sequelize";
 
-export default class RestaurantModel {
-    static tableName: string = 'restaurants';
-    static modelName: string = 'Restaurant';
+export default class SuscriptionModel {
+    static tableName: string = 'suscriptions';
+    static modelName: string = 'Suscription';
+
     static schema: any = {
-        restaurantId: {
-            field: 'restaurant_id',
+        suscriptionId: {
+            field: 'suscription_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
             autoIncrement: true,
         },
-        name: {
-            type: DataTypes.STRING,
+        monts: {
+            type: DataTypes.NUMBER,
+        },
+        startDate: {
+            type: DataTypes.DATE,
+            field: 'start_date',
             allowNull: false,
         },
-        email: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-        }, 
-        password: {
-            type: DataTypes.STRING,
-        },
-        logo: {
-            type: DataTypes.STRING,
-        },
-        phoneNumber: {
-            type: DataTypes.STRING,
-            field: 'phone_number',
+        endDate: {
+            type: DataTypes.DATE,
+            field: 'end_date',
             allowNull: false,
         },
-        restaurantTypeId: {
+        price: {
+            type: DataTypes.DOUBLE,
+            allowNull: false,
+        },
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            field: 'is_active',
+            allowNull: false,
+        },
+        restaurantId: {
             type: DataTypes.INTEGER,
-            field: 'restaurant_type_id',
-            allowNull: false,
-        },
-        countryId: {
-            type: DataTypes.INTEGER,
-            field: 'country_id',
+            field: 'restaurant_id',
             allowNull: false,
         }
     };

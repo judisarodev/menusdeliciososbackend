@@ -1,44 +1,48 @@
 import { DataTypes } from "sequelize";
 
-export default class RestaurantModel {
-    static tableName: string = 'restaurants';
-    static modelName: string = 'Restaurant';
+export default class MenuModel {
+    static tableName: string = 'menus';
+    static modelName: string = 'Menu';
+
     static schema: any = {
-        restaurantId: {
-            field: 'restaurant_id',
+        menuId: {
+            field: 'survey_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
             autoIncrement: true,
         },
-        name: {
+        showDescription: {
+            field: 'show_description',
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        showImge: {
+            field: 'show_image',
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        showNavigation: {
+            field: 'show_navigation',
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        showIcons: {
+            field: 'show_icons',
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        layout: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: {
+        font: {
             type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-        }, 
-        password: {
-            type: DataTypes.STRING,
-        },
-        logo: {
-            type: DataTypes.STRING,
-        },
-        phoneNumber: {
-            type: DataTypes.STRING,
-            field: 'phone_number',
             allowNull: false,
         },
-        restaurantTypeId: {
+        restaurantId: {
+            field: 'restaurant_id',
             type: DataTypes.INTEGER,
-            field: 'restaurant_type_id',
-            allowNull: false,
-        },
-        countryId: {
-            type: DataTypes.INTEGER,
-            field: 'country_id',
             allowNull: false,
         }
     };

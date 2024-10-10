@@ -3,11 +3,14 @@ dotenv.config();
 import { Sequelize } from 'sequelize';
 import ProductModel from './models/productModel';
 import AddressModel from './models/addressModel';
-import PhoneCodeModel from './models/phoneCodeModel';
-import PhoneModel from './models/phoneModel';
 import RestaurantTypeModel from './models/restaurantTypeModel';
 import RestaurantModel from './models/restaurantModel';
 import CategoryModel from './models/categoryModel';
+import SuscriptionModel from './models/suscriptionModel';
+import PaletteModel from './models/paletteModel';
+import MenuModel from './models/menuModel';
+import CountryModel from './models/countryModel';
+import SurveyModel from './models/SurveyModel';
 
 export default class SequelizeSetUp {
     static dataBase: { name: string, user: string, password: string, host: string } = {
@@ -48,22 +51,40 @@ export default class SequelizeSetUp {
 
     static setUpModels(){
 
+        const Suscription = this.sequelize.define(
+            SuscriptionModel.getModelName(),
+            SuscriptionModel.getModelSchema(),
+            SuscriptionModel.getModelOptions(this.sequelize)
+        );
+
+        const Palette = this.sequelize.define(
+            PaletteModel.getModelName(),
+            PaletteModel.getModelSchema(),
+            PaletteModel.getModelOptions(this.sequelize)
+        );
+
+        const Menu = this.sequelize.define(
+            MenuModel.getModelName(),
+            MenuModel.getModelSchema(),
+            MenuModel.getModelOptions(this.sequelize)
+        );
+
+        const Survey = this.sequelize.define(
+            SurveyModel.getModelName(),
+            SurveyModel.getModelSchema(),
+            SurveyModel.getModelOptions(this.sequelize)
+        );
+
+        const Country = this.sequelize.define(
+            CountryModel.getModelName(),
+            SurveyModel.getModelSchema(),
+            SurveyModel.getModelOptions(this.sequelize)
+        );
+
         const Address = this.sequelize.define(
             AddressModel.getModelName(),
             AddressModel.getModelSchema(),
             AddressModel.getModelOptions(this.sequelize)
-        );
-
-        const PhoneCode = this.sequelize.define(
-            PhoneCodeModel.getModelName(),
-            PhoneCodeModel.getModelSchema(),
-            PhoneCodeModel.getModelOptions(this.sequelize)
-        );
-
-        const Phone = this.sequelize.define(
-            PhoneModel.getModelName(),
-            PhoneModel.getModelSchema(),
-            PhoneModel.getModelOptions(this.sequelize)
         );
 
         const RestaurantType = this.sequelize.define(
@@ -93,36 +114,49 @@ export default class SequelizeSetUp {
         return {
             Product, 
             Address,
-            PhoneCode,
-            Phone,
             RestaurantType,
             Restaurant,
-            Category
+            Category,
+            Suscription,
+            Survey,
+            Menu,
+            Palette,
+            Country
         };
     }
 
     static setUpAssociations(models: any): void {
-        models.Phone.belongsTo(models.PhoneCode, {
-            foreignKey: 'phoneCodeId',
-            as: 'phoneCode'
-        });
-
-        models.Restaurant.belongsTo(models.Phone, {
-            foreignKey: 'phoneId',
-            as: 'phone'
-        });
-
-        models.Restaurant.belongsTo(models.Address, {
-            foreignKey: 'addressId',
-            as: 'address'
-        });
-
         models.Restaurant.belongsTo(models.RestaurantType, {
             foreignKey: 'restaurantTypeId',
             as: 'restaurantType'
         });
 
-        models.Category.belongsTo(models.Restaurant, {
+        models.Restaurant.belongsTo(models.Country, {
+            foreignKey: 'countryId',
+            as: 'country'
+        });
+
+        models.Suscription.belongsTo(models.Restaurant, {
+            foreignKey: 'restaurantId',
+            as: 'restaurant'
+        });
+        
+        models.Survey.belongsTo(models.Restaurant, {
+            foreignKey: 'restaurant_id',
+            as: 'restaurant'
+        });
+
+        models.Menu.belongsTo(models.Restaurant, {
+            foreignKey: 'restaurant_id',
+            as: 'restaurant'
+        });
+
+        models.Menu.belongsTo(models.Palette, {
+            foreignKey: 'palette_id',
+            as: 'palette'
+        });
+        
+        models.Address.belongsTo(models.Restaurant, {
             foreignKey: 'restaurantId',
             as: 'restaurant'
         });
@@ -131,6 +165,12 @@ export default class SequelizeSetUp {
             foreignKey: 'categoryId',
             as: 'category'
         });
+
+        models.Category.belongsTo(models.Menu, {
+            foreignKey: 'menu_id',
+            as: 'menu'
+        });
+
 
     }
 }

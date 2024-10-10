@@ -23,9 +23,9 @@ export default class CategoryModel {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        restaurantId: {
+        menuId: {
             type: DataTypes.INTEGER,
-            field: 'restaurant_id',
+            field: 'menu_id',
             allowNull: false,
         }
     };

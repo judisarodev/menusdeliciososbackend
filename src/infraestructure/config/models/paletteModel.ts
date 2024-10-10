@@ -1,24 +1,35 @@
 import { DataTypes } from "sequelize";
 
-export default class PhoneModel {
-    static tableName: string = 'phones';
-    static modelName: string = 'Phone';
+export default class PaletteModel {
+    static tableName: string = 'palettes';
+    static modelName: string = 'Palette';
+
     static schema: any = {
-        phoneId: {
-            field: 'phone_id',
+        paletteId: {
+            field: 'palette_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
             autoIncrement: true,
         },
-        phoneNumber: {
-            field: 'phone_number',
+        primaryColor: {
+            field: 'primary_color',
             type: DataTypes.STRING,
             allowNull: false,
         },
-        phoneCodeId: {
-            field: 'phone_code_id',
-            type: DataTypes.INTEGER,
+        secondaryColor: {
+            field: 'secondary_color',
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        primaryTextColor: {
+            field: 'primary_text_color',
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        secondaryTextColor: {
+            field: 'secondaryTextColor',
+            type: DataTypes.STRING,
             allowNull: false,
         }
     };

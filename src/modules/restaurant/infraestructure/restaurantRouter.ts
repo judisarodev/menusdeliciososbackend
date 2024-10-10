@@ -3,11 +3,9 @@ import RouterPattern from "../../../domain/routerPattern";
 import RestaurantRepositoryImplementation from './restaurantRepositoryImplementation';
 import CreateRestaurantUseCase from '../application/createRestaurantUseCase';
 import GetRestaurantByIdUseCase from '../application/getRestaurantByIdUseCase';
-import RestaurantEntity from '../domain/restaurantEntity';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
-import PhoneRepositoryImplementation from '../../phone/infraestructure/phoneRepositoryImplementation';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -17,16 +15,13 @@ export default class RestaurantRouter implements RouterPattern {
     createRestaurantUseCase: CreateRestaurantUseCase;
     authenticationPatternImplementation: AuthenticationPatternImplementation;
     addressRepositoryImplementation: AddressRepositoryImplementation;
-    phoneRepositoryImplementation: PhoneRepositoryImplementation;
     constructor() {
         this.router = Router();
         this.restaurantRepositoryImplementation = new RestaurantRepositoryImplementation();
         this.addressRepositoryImplementation = new AddressRepositoryImplementation();
-        this.phoneRepositoryImplementation = new PhoneRepositoryImplementation();
         this.createRestaurantUseCase = new CreateRestaurantUseCase(
             this.restaurantRepositoryImplementation,
             this.addressRepositoryImplementation,
-            this.phoneRepositoryImplementation
         );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation);
         this.authenticationPatternImplementation = new AuthenticationPatternImplementation();
@@ -176,9 +171,8 @@ export default class RestaurantRouter implements RouterPattern {
          */
         this.router.post('/create', async (req: any, res: any) => {
             try {
-                const { name, email, password, logo, phoneInfo, addressInfo, restaurantTypeInfo } = req.body;
-                const restaurantEntity = new RestaurantEntity(name, email, logo);
-                await this.createRestaurantUseCase.execute(restaurantEntity, phoneInfo, addressInfo, restaurantTypeInfo, password);
+                const { name, email, password, phoneNumber, addresss, addressDetails, restaurantTypeId, countryId } = req.body;
+                //await this.createRestaurantUseCase.execute(name, email, password, phoneNumber, addresss, addressDetails, restaurantTypeId, countryId);
                 return res.status(201).json({ message: 'Restaurante creado exitosamente.' });
             } catch (error) {
                 console.error(error);
@@ -244,8 +238,6 @@ export default class RestaurantRouter implements RouterPattern {
                     name: restaurant.getName(),
                     email: restaurant.getEmail(),
                     logo: restaurant.getLogo(),
-                    phone: `${restaurant.getPhone()?.getPhoneCode().getCode()} ${restaurant.getPhone()?.getPhoneNumber()}`,
-                    address: `${restaurant.getAddress()?.getAddress()} - ${restaurant.getAddress()?.getAddressDetails()}`,
                     restaurantType: restaurant.getRestaurantType()?.getName(),
                 });
             } catch (error) {
