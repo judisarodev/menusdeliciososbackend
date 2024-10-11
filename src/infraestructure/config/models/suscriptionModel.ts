@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 
 export default class SuscriptionModel {
     static tableName: string = 'suscriptions';
-    static modelName: string = 'Suscription';
+    static modelName: string = 's0uscriptions';
 
     static schema: any = {
         suscriptionId: {

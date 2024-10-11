@@ -1,12 +1,16 @@
+import RestaurantEntity from "../../restaurant/domain/restaurantEntity";
+
 export default class AddressEntity {
     private addressId: number | undefined;
     private address: string;
-    private addressDetails: string | undefined;
+    private details: string | undefined;
+    private restaurant: RestaurantEntity;
 
-    constructor(address: string, addresDetails?: string, addressId?: number){
+    constructor(address: string, details: string, restaurant: RestaurantEntity, addressId?: number){
         this.address = address;
-        this.addressDetails = addresDetails;
+        this.details = details;
         this.addressId = addressId;
+        this.restaurant = restaurant; 
     }
 
     getAddressId(): number | undefined {
@@ -18,7 +22,7 @@ export default class AddressEntity {
     }
 
     getAddressDetails(): string | undefined{
-        return this.addressDetails; 
+        return this.details; 
     }
 
     setAddressId(addressId: number): void {
