@@ -40,11 +40,6 @@ export default class MenuModel {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        restaurantId: {
-            field: 'restaurant_id',
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        }
     };
     static options: any = {
         timestamps: false,

@@ -1,17 +1,16 @@
-import RestaurantEntity from "../../restaurant/domain/restaurantEntity";
+import MenuEntity from "../../menu/domain/MenuEntity";
 
 export class CategoryEntity {
     private categoryId: number | undefined;
     private name: string;
-    private image: string;
     private icon: string;
-    private restaurant: RestaurantEntity | undefined;
+    private menu: MenuEntity | undefined;
    
-    constructor(name: string, image: string, icon: string, categoryId?: number){
+    constructor(name: string, image: string, icon: string, menu: MenuEntity, categoryId?: number){
         this.categoryId = categoryId;
         this.name = name;
-        this.image = image;
         this.icon = icon;
+        this.menu = menu; 
     }
 
     getCategoryId(): number | undefined {
@@ -22,19 +21,15 @@ export class CategoryEntity {
         return this.name; 
     }
 
-    getImage(): string {
-        return this.image; 
-    }
-
     getIcon(): string {
         return this.icon; 
     }
 
-    getRestaurant(): RestaurantEntity | undefined {
-        return this.restaurant;
+    getMenu(): MenuEntity | undefined {
+        return this.menu;
     }
 
-    setRestaurant(restaurant: RestaurantEntity): void {
-        this.restaurant = restaurant;
+    setMenu(restaurant: MenuEntity): void {
+        this.menu = restaurant;
     }
 }

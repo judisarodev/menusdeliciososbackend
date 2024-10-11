@@ -10,7 +10,7 @@ import SuscriptionModel from './models/suscriptionModel';
 import PaletteModel from './models/paletteModel';
 import MenuModel from './models/menuModel';
 import CountryModel from './models/countryModel';
-import SurveyModel from './models/SurveyModel';
+import SurveyModel from './models/surveyModel';
 
 export default class SequelizeSetUp {
     static dataBase: { name: string, user: string, password: string, host: string } = {
@@ -77,8 +77,8 @@ export default class SequelizeSetUp {
 
         const Country = this.sequelize.define(
             CountryModel.getModelName(),
-            SurveyModel.getModelSchema(),
-            SurveyModel.getModelOptions(this.sequelize)
+            CountryModel.getModelSchema(),
+            CountryModel.getModelOptions(this.sequelize)
         );
 
         const Address = this.sequelize.define(
@@ -146,9 +146,9 @@ export default class SequelizeSetUp {
             as: 'restaurant'
         });
 
-        models.Menu.belongsTo(models.Restaurant, {
-            foreignKey: 'restaurant_id',
-            as: 'restaurant'
+        models.Restaurant.belongsTo(models.Menu, {
+            foreignKey: 'menu_id',
+            as: 'menu'
         });
 
         models.Menu.belongsTo(models.Palette, {

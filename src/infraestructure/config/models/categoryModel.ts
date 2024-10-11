@@ -15,10 +15,6 @@ export default class CategoryModel {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        image: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         icon: {
             type: DataTypes.STRING,
             allowNull: false,

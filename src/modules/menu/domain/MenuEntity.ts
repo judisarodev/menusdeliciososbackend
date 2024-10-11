@@ -1,3 +1,4 @@
+import PaletteEntity from "../../palette/domain/paletteEntity";
 import RestaurantEntity from "../../restaurant/domain/restaurantEntity";
 
 export default class MenuEntity {
@@ -8,9 +9,9 @@ export default class MenuEntity {
     private showIcons: boolean;
     private layout: string;
     private font: string; 
-    private restaurant: RestaurantEntity;
+    private palette: PaletteEntity;
 
-    constructor(showDescription: boolean, showImage: boolean, showNavigation: boolean, showIcons: boolean, layout: string, font: string, restaurant: RestaurantEntity, menuId?: number){
+    constructor(showDescription: boolean, showImage: boolean, showNavigation: boolean, showIcons: boolean, layout: string, font: string, palette: PaletteEntity, menuId?: number){
         this.showDescription = showDescription;
         this.showImage = showImage;
         this.showNavigation = showNavigation;
@@ -18,7 +19,7 @@ export default class MenuEntity {
         this.layout = layout;
         this.font = font;
         this.menuId = menuId;
-        this.restaurant = restaurant; 
+        this.palette = palette; 
     }
 
     getMenuId(): number | undefined {
@@ -49,8 +50,8 @@ export default class MenuEntity {
         return this.font;
     }
 
-    getRestaurant(): RestaurantEntity {
-        return this.restaurant;
+    getPalette(): PaletteEntity {
+        return this.palette;
     }
 
     setMenuId(id: number){

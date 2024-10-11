@@ -40,6 +40,11 @@ export default class RestaurantModel {
             type: DataTypes.INTEGER,
             field: 'country_id',
             allowNull: false,
+        },
+        menuId: {
+            type: DataTypes.INTEGER,
+            field: 'menu_id',
+            allowNull: false,
         }
     };
     static options: any = {
