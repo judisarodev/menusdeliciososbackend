@@ -9,9 +9,10 @@ export default class MenuRepositoryImplementation implements MenuRepository{
     }
 
     async create(layout: string, font: string, paletteId: number, url: string){
-        return await this.models.Menu.create({
+        
+        const menu = await this.models.Menu.create({
             showDescription: true,
-            showImge: true,
+            showImages: true,
             showNavigation: true,
             showIcons: true,
             layout,
@@ -19,6 +20,7 @@ export default class MenuRepositoryImplementation implements MenuRepository{
             font,
             paletteId,
         });
+        return menu.menuId;
     }
     
 }

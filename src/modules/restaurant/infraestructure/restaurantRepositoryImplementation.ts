@@ -31,7 +31,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         };
     }
 
-    async create(restaurantEntity: RestaurantEntity, password: string, restaurantTypeId: number, countryId: number): Promise<number> {
+    async create(restaurantEntity: RestaurantEntity, password: string, restaurantTypeId: number, countryId: number, menuId: number): Promise<number> {
         try{
             const hashedPassword = await bcrypt.hash(password, 10); 
             const r = await this.models.Restaurant.create({
@@ -41,6 +41,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 password: hashedPassword,
                 restaurantTypeId,
                 countryId,
+                menuId
             });
             return r.restaurantId;
         }catch(error){

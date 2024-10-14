@@ -6,7 +6,7 @@ export default class MenuModel {
 
     static schema: any = {
         menuId: {
-            field: 'survey_id',
+            field: 'menu_id',
             type: DataTypes.INTEGER,
             primaryKey: true,
             unique: true,
@@ -17,8 +17,8 @@ export default class MenuModel {
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        showImge: {
-            field: 'show_image',
+        showImages: {
+            field: 'show_images',
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
@@ -44,6 +44,11 @@ export default class MenuModel {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        paletteId: {
+            field: 'palette_id',
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        }
     };
     static options: any = {
         timestamps: false,

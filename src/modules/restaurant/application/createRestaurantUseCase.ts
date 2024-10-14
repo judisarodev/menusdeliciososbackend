@@ -15,17 +15,24 @@ export default class CreateRestaurantUseCase {
     async execute(info: any){
         const { name, email, password, phoneNumber, address, addressDetails, countryId, restaurantTypeId } = info;
         
+        const date = new Date();
+        const day = String(date.getDate()).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear(); 
+
+        const url = `/${ name }-${day}-${month}-${year}`;
+        const paletteId = restaurantTypeId;
+        const layout = 'linear';
+        const font = 'sans-serif';
+        console.log('paletteId', paletteId); 
+        console.log('restaurantTypeId', restaurantTypeId); 
+        const menuId = await this.menuRepositoryImplementation.create(layout, font, paletteId, url);
+        
         const restaurantEntity = new RestaurantEntity(name, email, phoneNumber, false);
-        const restaurantId = await this.restaurantRepositoryImplementation.create(restaurantEntity, password, restaurantTypeId, countryId);
+        const restaurantId = await this.restaurantRepositoryImplementation.create(restaurantEntity, password, restaurantTypeId, countryId, menuId);
         
         const addressEntity = new AddressEntity(address, addressDetails);
         this.addressRepositoryImplementation.create(addressEntity, restaurantId);
         
-        const url = `/${ name }-${ new Date() } `;
-        const paletteId = restaurantTypeId;
-        const layout = 'linear';
-        const font = 'sans-serif';
-        this.menuRepositoryImplementation.create(layout, font, paletteId, url);
-
     }
 }

@@ -110,6 +110,7 @@ export default class SequelizeSetUp {
             ProductModel.getModelSchema(),
             ProductModel.getModelOptions(this.sequelize)
         );
+        
 
         return {
             Product, 
@@ -169,6 +170,11 @@ export default class SequelizeSetUp {
         models.Category.belongsTo(models.Menu, {
             foreignKey: 'menu_id',
             as: 'menu'
+        });
+
+        models.Palette.belongsTo(models.Menu, {
+            foreignKey: 'palette_id',
+            as: 'palette'
         });
 
 
