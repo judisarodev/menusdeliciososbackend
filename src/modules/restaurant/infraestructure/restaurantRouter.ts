@@ -149,6 +149,16 @@ export default class RestaurantRouter implements RouterPattern {
          *                   example: "Restaurante creado exitosamente"
          *       500:
          *         description: Internal server error
+         *         content:
+         *           application/json:
+         *             schema:
+         *               type: object
+         *               properties:
+         *                 message:
+         *                   type: string
+         *                   example: "No fue posible crear el restaurante"
+         *       400:
+         *         description: Bad request
          */
         this.router.post('/create', async (req: any, res: any) => {
             try {
