@@ -6,11 +6,10 @@ export class CategoryEntity {
     private icon: string;
     private menu: MenuEntity | undefined;
    
-    constructor(name: string, image: string, icon: string, menu: MenuEntity, categoryId?: number){
+    constructor(name: string, icon: string, categoryId?: number){
         this.categoryId = categoryId;
         this.name = name;
-        this.icon = icon;
-        this.menu = menu; 
+        this.icon = icon; 
     }
 
     getCategoryId(): number | undefined {

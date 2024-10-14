@@ -80,7 +80,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
             const restaurantEntity = new RestaurantEntity(
                 restaurant.name, 
                 restaurant.email, 
-                restaurant.logo, 
+                '316777888', 
                 restaurantId
             );
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 

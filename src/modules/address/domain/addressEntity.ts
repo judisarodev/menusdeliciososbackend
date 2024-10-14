@@ -4,13 +4,12 @@ export default class AddressEntity {
     private addressId: number | undefined;
     private address: string;
     private details: string | undefined;
-    private restaurant: RestaurantEntity;
+    private restaurant: RestaurantEntity | undefined;
 
-    constructor(address: string, details: string, restaurant: RestaurantEntity, addressId?: number){
+    constructor(address: string, details: string, addressId?: number){
         this.address = address;
         this.details = details;
         this.addressId = addressId;
-        this.restaurant = restaurant; 
     }
 
     getAddressId(): number | undefined {
@@ -27,5 +26,13 @@ export default class AddressEntity {
 
     setAddressId(addressId: number): void {
         this.addressId = addressId;
+    }
+
+    setRestaurant(restaurant: RestaurantEntity){
+        this.restaurant = restaurant;
+    }
+
+    getRestaurant(): RestaurantEntity | undefined {
+        return this.restaurant;
     }
 }

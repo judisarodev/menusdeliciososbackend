@@ -24,7 +24,7 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
                 attributes: ['restaurantId', 'name']
             }]
         });
-        const categoryEntity = new CategoryEntity(category.name, category.image, category.icon, categoryId);
+        const categoryEntity = new CategoryEntity(category.name, category.icon, categoryId);
         return categoryEntity;
     }
 
@@ -36,7 +36,7 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
             });
             const categoryEntities = [];
             for(const category of categories){
-                categoryEntities.push(new CategoryEntity(category.name, category.image, category.icon, category.categoryId));
+                categoryEntities.push(new CategoryEntity(category.name, category.icon, category.categoryId));
             }
             return categoryEntities;
         }catch(error){
@@ -48,9 +48,7 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
     async create(categoryEntity: CategoryEntity) {
         await this.models.Category.create({
             name: categoryEntity.getName(),
-            image: categoryEntity.getImage(),
-            icon: categoryEntity.getIcon(),
-            restaurantId: 1, 
+            icon: categoryEntity.getIcon()
         });
     }
 }

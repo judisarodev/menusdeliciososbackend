@@ -1,4 +1,5 @@
 import AddressEntity from "../../address/domain/addressEntity";
+import MenuEntity from "../../menu/domain/MenuEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 
 export default class RestaurantEntity {
@@ -7,7 +8,7 @@ export default class RestaurantEntity {
     private email: string;
     private logo: string = '';
     private phoneNumber: string; 
-
+    private menu: MenuEntity | undefined;
     private restaurantType: RestaurantTypeEntity | undefined;
     private addresses: AddressEntity[] = [];
     
@@ -58,4 +59,9 @@ export default class RestaurantEntity {
     getAddresses(): AddressEntity[]{
         return this.addresses;
     }
+
+    getMenu(): MenuEntity | undefined {
+        return this.menu;
+    }
+
 }

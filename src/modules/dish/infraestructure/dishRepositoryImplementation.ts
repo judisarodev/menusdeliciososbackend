@@ -22,7 +22,7 @@ export class DishRepositoryImplementation implements DishRepository{
                     attributes: ['name', 'image','icon']
                 }]
             });
-            const categoryEntity = new CategoryEntity(product.category.name, product.category.image, product.category.icon, product.categoryId);
+            const categoryEntity = new CategoryEntity(product.category.name, product.category.icon, product.categoryId);
             const dishEntity = new DishEntity(product.name, product.price, product.description, product.image, dishId);
             dishEntity.setCategory(categoryEntity);
             return dishEntity;

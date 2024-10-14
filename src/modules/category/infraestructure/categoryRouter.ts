@@ -72,7 +72,6 @@ export default class CategoryRouter {
                 const restaurant = await this.restaurantRepositoryImplementation.getById(restaurantId);
                 if(restaurant){
                     const categoryEntity = new CategoryEntity(name, image, icon);
-                    categoryEntity.setRestaurant(restaurant);
                     await this.createCategoryUseCase.execute(categoryEntity, restaurantId);
                     return res.status(200).json({ message: 'Categoría creada con éxito.' });
                 }else {
