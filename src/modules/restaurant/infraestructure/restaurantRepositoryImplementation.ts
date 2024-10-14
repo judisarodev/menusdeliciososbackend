@@ -81,7 +81,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 restaurant.name, 
                 restaurant.email, 
                 '316777888', 
-                restaurantId
+                true
             );
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 
     
