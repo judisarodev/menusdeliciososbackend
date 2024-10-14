@@ -33,29 +33,53 @@ export default class CreateRestaurantUseCase {
                 status: 400
             }
         }
-
         const { name, email, password, phoneNumber, address, addressDetails, countryId, restaurantTypeId } = info;
-        
-        const date = new Date();
-        const day = String(date.getDate()).padStart(2, '0'); 
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear(); 
 
-        const url = `/${ name }-${day}-${month}-${year}`;
-        const paletteId = restaurantTypeId;
-        const layout = 'linear';
-        const font = 'sans-serif';
-        const menuId = await this.menuRepositoryImplementation.create(layout, font, paletteId, url);
-        
-        const restaurantEntity = new RestaurantEntity(name, email, phoneNumber, false);
-        const restaurantId = await this.restaurantRepositoryImplementation.create(restaurantEntity, password, restaurantTypeId, countryId, menuId);
-        
-        const addressEntity = new AddressEntity(address, addressDetails);
-        await this.addressRepositoryImplementation.create(addressEntity, restaurantId);
+        const duplicatedEmail = await this.checkEmail(email);
+        if(duplicatedEmail){
+            return {
+                response: {  message: 'El correo electrónico ya está registrado'},
+                status: 409
+            }
+        }
+
+        const restaurantId = await this.createRestaurant(restaurantTypeId, name, email, phoneNumber, password, countryId);
+        await this.createAddress(address, addressDetails, restaurantId);
     
         return {
             response: { message: 'Restaurante creado exitosamente' },
             status: 201
         }
+    }
+
+    async checkEmail(email: string): Promise<boolean>{
+        return await this.restaurantRepositoryImplementation.checkEmail(email);
+    }
+
+    async createRestaurant(restaurantTypeId: number, name: string, email: string, phoneNumber: string, password: string, countryId: number): Promise<number>{
+        const paletteId = restaurantTypeId;
+        const layout = 'linear';
+        const font = 'sans-serif';
+        const url = this.createUrl(name);
+        const menuId = await this.menuRepositoryImplementation.create(layout, font, paletteId, url);
+        
+        const restaurantEntity = new RestaurantEntity(name, email, phoneNumber, false);
+        const restaurantId = await this.restaurantRepositoryImplementation.create(restaurantEntity, password, restaurantTypeId, countryId, menuId);
+        return restaurantId;
+    }
+
+    async createAddress(address: string, addressDetails: string, restaurantId: number): Promise<void>{
+        const addressEntity = new AddressEntity(address, addressDetails);
+        await this.addressRepositoryImplementation.create(addressEntity, restaurantId);
+    }
+
+    createUrl(restaurantName: string): string{
+        const date = new Date();
+        const day = String(date.getDate()).padStart(2, '0'); 
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear(); 
+
+        const url = `/${ restaurantName }-${day}-${month}-${year}`;
+        return url;
     }
 }

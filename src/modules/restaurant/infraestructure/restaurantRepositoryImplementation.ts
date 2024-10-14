@@ -95,4 +95,19 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         }
     }
 
+    async checkEmail(email: string): Promise<boolean>{
+        try{
+            const restaurant = await this.models.Restaurant.findOne({
+                where: { email }
+            });
+            if(restaurant){
+                return true;
+            }
+            return false;
+        }catch(error){
+            console.error(error);
+            throw error; 
+        }
+    }
+
 }
