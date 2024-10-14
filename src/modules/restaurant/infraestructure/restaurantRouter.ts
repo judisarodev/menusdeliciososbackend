@@ -6,6 +6,7 @@ import GetRestaurantByIdUseCase from '../application/getRestaurantByIdUseCase';
 import AuthenticationPatternImplementation from '../../../infraestructure/authentication/authenticationPatternInplementation';
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
+import MenuRepositoryImplementation from '../../menu/infraestructure/menuRepositoryImplementation';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -15,13 +16,17 @@ export default class RestaurantRouter implements RouterPattern {
     createRestaurantUseCase: CreateRestaurantUseCase;
     authenticationPatternImplementation: AuthenticationPatternImplementation;
     addressRepositoryImplementation: AddressRepositoryImplementation;
+    menuRepositoryImplementation: MenuRepositoryImplementation;
+
     constructor() {
         this.router = Router();
         this.restaurantRepositoryImplementation = new RestaurantRepositoryImplementation();
         this.addressRepositoryImplementation = new AddressRepositoryImplementation();
+        this.menuRepositoryImplementation = new MenuRepositoryImplementation();
         this.createRestaurantUseCase = new CreateRestaurantUseCase(
             this.restaurantRepositoryImplementation,
             this.addressRepositoryImplementation,
+            this.menuRepositoryImplementation,
         );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation);
         this.authenticationPatternImplementation = new AuthenticationPatternImplementation();

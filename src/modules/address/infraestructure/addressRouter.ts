@@ -23,10 +23,10 @@ export default class AddressRouter implements RouterPattern {
     setUpRoutes(): void {
         this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{
-                const { address, addressDetails } = req.body;
+                const { address, addressDetails, restaurantId } = req.body;
 
                 const addressEntity = new AddressEntity(address, addressDetails);
-                await this.createAddressUseCase.execute(addressEntity);
+                await this.createAddressUseCase.execute(addressEntity, restaurantId);
 
                 return res.status(200).json({ message: 'Dirección creada exitosamente' });
             }catch(error){

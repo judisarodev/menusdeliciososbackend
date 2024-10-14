@@ -13,13 +13,12 @@ export default class RestaurantEntity {
     private addresses: AddressEntity[] = [];
     private isEmailVerified: boolean;
 
-    constructor(name: string, email: string, phoneNumber:string, isEmailVerified: boolean, url: string, restaurantId?: number){
+    constructor(name: string, email: string, phoneNumber:string, isEmailVerified: boolean, restaurantId?: number){
         this.restaurantId = restaurantId;
         this.name = name; 
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.isEmailVerified = isEmailVerified;
-        this.url = url;
     }
 
     getIsEmailVerifie(): boolean {

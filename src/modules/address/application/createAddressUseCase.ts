@@ -4,7 +4,7 @@ import AddressRepositoryImplementation from "../infraestructure/addressRepositor
 export default class CreateAddressUseCase {
     constructor(private addressRepositoryImplementation: AddressRepositoryImplementation){}
 
-    async execute(phone: AddressEntity){
-        this.addressRepositoryImplementation.create(phone);
+    async execute(phone: AddressEntity, restaurantId: number){
+        this.addressRepositoryImplementation.create(phone, restaurantId);
     }
 }
