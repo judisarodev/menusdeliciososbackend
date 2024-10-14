@@ -17,19 +17,21 @@ export default class RestaurantRouter implements RouterPattern {
     authenticationPatternImplementation: AuthenticationPatternImplementation;
     addressRepositoryImplementation: AddressRepositoryImplementation;
     menuRepositoryImplementation: MenuRepositoryImplementation;
+    
 
     constructor() {
         this.router = Router();
         this.restaurantRepositoryImplementation = new RestaurantRepositoryImplementation();
         this.addressRepositoryImplementation = new AddressRepositoryImplementation();
         this.menuRepositoryImplementation = new MenuRepositoryImplementation();
+        this.authenticationPatternImplementation = new AuthenticationPatternImplementation();
         this.createRestaurantUseCase = new CreateRestaurantUseCase(
             this.restaurantRepositoryImplementation,
             this.addressRepositoryImplementation,
             this.menuRepositoryImplementation,
+            this.authenticationPatternImplementation,
         );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation);
-        this.authenticationPatternImplementation = new AuthenticationPatternImplementation();
         this.setUpRoutes();
     }
 
@@ -147,6 +149,9 @@ export default class RestaurantRouter implements RouterPattern {
          *                 message:
          *                   type: string
          *                   example: "Restaurante creado exitosamente"
+         *                 jwt:
+         *                   type: string
+         *                   example: "token-de-verificación"
          *       500:
          *         description: Internal server error
          *         content:

@@ -4,6 +4,7 @@ import AddressRepositoryImplementation from "../../address/infraestructure/addre
 import MenuRepositoryImplementation from "../../menu/infraestructure/menuRepositoryImplementation";
 import RestaurantEntity from "../domain/restaurantEntity";
 import RestaurantRepositoryImplementation from "../infraestructure/restaurantRepositoryImplementation";
+import AuthenticationPatternImplementation from "../../../infraestructure/authentication/authenticationPatternInplementation";
 
 export default class CreateRestaurantUseCase {
     private schema: any;
@@ -12,6 +13,7 @@ export default class CreateRestaurantUseCase {
         private restaurantRepositoryImplementation: RestaurantRepositoryImplementation,
         private addressRepositoryImplementation: AddressRepositoryImplementation,
         private menuRepositoryImplementation: MenuRepositoryImplementation,
+        private authenticationPatternImplementation: AuthenticationPatternImplementation,
     ){
         this.schema = Joi.object({
             name: Joi.string().required(),
@@ -45,9 +47,14 @@ export default class CreateRestaurantUseCase {
 
         const restaurantId = await this.createRestaurant(restaurantTypeId, name, email, phoneNumber, password, countryId);
         await this.createAddress(address, addressDetails, restaurantId);
+
+        const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
     
         return {
-            response: { message: 'Restaurante creado exitosamente' },
+            response: {
+                message: 'Restaurante creado exitosamente',
+                jwt
+            },
             status: 201
         }
     }
