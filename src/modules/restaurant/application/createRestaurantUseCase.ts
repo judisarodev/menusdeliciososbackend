@@ -10,13 +10,16 @@ export default class CreateRestaurantUseCase {
         private addressRepositoryImplementation: AddressRepositoryImplementation,
     ){}
 
-    async execute(restaurant: RestaurantEntity, addressInfo: AddressEntity, restaurantTypeInfo: any, password: string){
-        /*const restaurantEntity = new RestaurantEntity(name, email, phoneNumber);
+    async execute(info: any){
+        const { name, email, password, phoneNumber, address, addressDetails, countryId, restaurantTypeId } = info;
+        
+        const url = `/${ name }-${ new Date() } `;
+        const restaurantEntity = new RestaurantEntity(name, email, phoneNumber, false, url);
+        const restaurantId = await this.restaurantRepositoryImplementation.create(restaurantEntity, password, restaurantTypeId, countryId);
 
-        const { restaurantTypeName, restaurantTypeId } = restaurantTypeInfo;
-        const restaurantTypeEntity = new RestaurantTypeEntity(restaurantTypeName, restaurantTypeId);
+        const addressEntity = new AddressEntity(address, addressDetails);
+        this.addressRepositoryImplementation.create(addressEntity, restaurantId);
 
-        restaurant.setRestaurantType(restaurantTypeEntity); 
-        this.restaurantRepositoryImplementation.create(restaurant, password);*/
+        
     }
 }

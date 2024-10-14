@@ -1,7 +1,7 @@
 import RestaurantEntity from "./restaurantEntity";
 
 export default interface RestaurantRepository {
-    create(restaurantEntity: RestaurantEntity, password: string): Promise<void>;
+    create(restaurantEntity: RestaurantEntity, password: string, restaurantTypeId: number, countryId: number): Promise<number>;
     getById(restaurantId: number): Promise<RestaurantEntity>;
     login(email: string, password: string): Promise<any>;
 }

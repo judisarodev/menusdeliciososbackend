@@ -9,11 +9,12 @@ export default class AddressRepositoryImplementation implements AddressRepositor
         this.models = SequelizeSetUp.getModels();
     }
 
-    async create(address: AddressEntity) {
+    async create(address: AddressEntity, restaurantId: number) {
         try{
             const createdAddress = await this.models.Address.create({
                 address: address.getAddress(),
-                addressDetails: address.getAddressDetails()
+                addressDetails: address.getAddressDetails(),
+                restaurantId,
             });
             const addressId = createdAddress.addressId; 
             return addressId;

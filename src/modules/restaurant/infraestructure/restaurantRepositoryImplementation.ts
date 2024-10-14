@@ -31,16 +31,18 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         };
     }
 
-    async create(restaurantEntity: RestaurantEntity, password: string): Promise<void> {
+    async create(restaurantEntity: RestaurantEntity, password: string, restaurantTypeId: number, countryId: number): Promise<number> {
         try{
             const hashedPassword = await bcrypt.hash(password, 10); 
-
-            await this.models.Restaurant.create({
+            const r = await this.models.Restaurant.create({
                 name: restaurantEntity.getName(),
                 email: restaurantEntity.getEmail(),
+                phoneNumber: restaurantEntity.getPhone(),
                 password: hashedPassword,
-                restaurantTypeId: restaurantEntity.getRestaurantType()?.getRestaurantTypeId()
+                restaurantTypeId,
+                countryId,
             });
+            return r.restaurantId;
         }catch(error){
             console.error(error);
             throw error;

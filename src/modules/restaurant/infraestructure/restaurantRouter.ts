@@ -114,45 +114,21 @@ export default class RestaurantRouter implements RouterPattern {
          *                password:
          *                  type: string
          *                  example: "super-secure-password"
-         *                logo:
+         *                phoneNumber: 
          *                  type: string
-         *                  example: "https://images.com/route-to-image"
-         *                phoneInfo:
-         *                  type: object
-         *                  properties:
-         *                    phoneNumber: 
-         *                      type: string
-         *                      example: "3158883333"
-         *                    phoneCode:
-         *                      type: object
-         *                      properties:
-         *                        code:
-         *                          type: string
-         *                          example: "+57"
-         *                        country:
-         *                          type: "string"
-         *                          example: "Colombia"
-         *                        phoneCodeId: 
-         *                          type: number
-         *                          example: 1
-         *                addressInfo:
-         *                  type: object
-         *                  properties:
-         *                    address:
-         *                      type: string
-         *                      example: "Carrera 100 no 10 - 1"
-         *                    addressDetails: 
-         *                      type: string
-         *                      example: "Torre 2 apartamento 101"
-         *                restaurantTypeInfo:
-         *                  type: object
-         *                  properties:
-         *                    restaurantTypeName:
-         *                      type: string
-         *                      example: "Comida rápida"
-         *                    restaurantTypeId: 
-         *                      type: integer
-         *                      example: 1
+         *                  example: "3164449999"
+         *                address: 
+         *                  type: string
+         *                  example: "Calle 100 no 30 - 10"
+         *                addressDetails:
+         *                  type: string
+         *                  example: "Casa 23"
+         *                countryId: 
+         *                  type: number
+         *                  example: 1
+         *                restaurantTypeId: 
+         *                  type: number
+         *                  example: 1
          *     security:
          *       - BearerAuth: []
          *     responses:
@@ -171,8 +147,7 @@ export default class RestaurantRouter implements RouterPattern {
          */
         this.router.post('/create', async (req: any, res: any) => {
             try {
-                const { name, email, password, phoneNumber, addresss, addressDetails, restaurantTypeId, countryId } = req.body;
-                //await this.createRestaurantUseCase.execute(name, email, password, phoneNumber, addresss, addressDetails, restaurantTypeId, countryId);
+                await this.createRestaurantUseCase.execute(req.body);
                 return res.status(201).json({ message: 'Restaurante creado exitosamente.' });
             } catch (error) {
                 console.error(error);
