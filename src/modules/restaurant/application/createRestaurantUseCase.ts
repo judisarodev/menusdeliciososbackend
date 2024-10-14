@@ -19,7 +19,7 @@ export default class CreateRestaurantUseCase {
             password: Joi.string().required(),
             phoneNumber: Joi.string().alphanum().required(),
             address: Joi.string().required(),
-            addressDetails: Joi.string(),
+            addressDetails: Joi.string().allow('').optional(),
             countryId: Joi.number().required(),
             restaurantTypeId: Joi.number().required(),
         });
@@ -29,7 +29,7 @@ export default class CreateRestaurantUseCase {
         const { error } = this.schema.validate(info);
         if(error){
             return {
-                response: { message: 'Bad request' },
+                response: { message: 'Bad request: ' + error.message },
                 status: 400
             }
         }
