@@ -89,6 +89,6 @@ export default class MenuEntity {
     }
 
     setUrl(url: string): void {
-        this.url = url, 
+        this.url = url;
     }
 }
