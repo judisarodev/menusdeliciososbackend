@@ -15,7 +15,37 @@ export default class RestaurantTypeRouter implements RouterPattern {
 
         this.setUpRoutes(); 
     }
-
+    /**
+     * @swagger
+     * /api/restaurant-type/get-all:
+     *   get:
+     *      summary: Get all countries
+     *      tags:
+     *          - Restaurant type
+     *      responses:
+     *          200:
+     *              description: Sucess
+     *              content:
+     *                  application/json:
+     *                      schema:
+     *                          type: array
+     *                          items:
+     *                              type: object
+     *                              properties:
+     *                                  name:
+     *                                      type: string
+     *                                      example: "Panadería"
+     *          500:
+     *              description: Internal server error
+     *              content:
+     *                  application/json:
+     *                      schema:
+     *                          type: object
+     *                          properties:
+     *                              message:
+     *                                  type: string
+     *                                  example: "No ha sido posible consultar los tipos de restaurante"
+     */
     setUpRoutes(): void {
         this.router.get('/get-all', async (req: any, res: any) => {
             try{
@@ -23,7 +53,7 @@ export default class RestaurantTypeRouter implements RouterPattern {
                 return res.status(200).json(restaurantTypes); 
             }catch(error){
                 console.error(error);
-                return res.status(500).json(error);
+                return res.status(500).json({ message: 'No ha sido posible consultar los tipos de restaurante' });
             }
         });
     }
