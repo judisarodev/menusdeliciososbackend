@@ -36,6 +36,10 @@ export default class MenuModel {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        url: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         font: {
             type: DataTypes.STRING,
             allowNull: false,

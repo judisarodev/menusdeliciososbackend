@@ -10,8 +10,9 @@ export default class MenuEntity {
     private layout: string;
     private font: string; 
     private palette: PaletteEntity;
+    private url: string;
 
-    constructor(showDescription: boolean, showImage: boolean, showNavigation: boolean, showIcons: boolean, layout: string, font: string, palette: PaletteEntity, menuId?: number){
+    constructor(showDescription: boolean, showImage: boolean, showNavigation: boolean, showIcons: boolean, layout: string, font: string, palette: PaletteEntity, url: string, menuId?: number){
         this.showDescription = showDescription;
         this.showImage = showImage;
         this.showNavigation = showNavigation;
@@ -20,6 +21,7 @@ export default class MenuEntity {
         this.font = font;
         this.menuId = menuId;
         this.palette = palette; 
+        this.url = url;
     }
 
     getMenuId(): number | undefined {
@@ -80,5 +82,13 @@ export default class MenuEntity {
 
     setFont(v: string){
         this.font = v;
+    }
+
+    getUrl(): string {
+        return this.url;
+    }
+
+    setUrl(url: string): void {
+        this.url = url, 
     }
 }
