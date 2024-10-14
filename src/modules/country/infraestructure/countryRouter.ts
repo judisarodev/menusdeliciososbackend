@@ -18,7 +18,7 @@ export default class CountryRouter implements RouterPattern {
     setUpRoutes(){
         /**
          * @swagger
-         * /api/dish/get-all:
+         * /api/country/get-all:
          *   get:
          *      summary: Get all countries
          *      tags:
@@ -29,11 +29,19 @@ export default class CountryRouter implements RouterPattern {
          *              content:
          *                  application/json:
          *                      schema:
-         *                          type: object
-         *                          properties: 
-         *                              dishId: 
-         *                                  type: number
-         *                                  example: 1
+         *                          type: array
+         *                          items:
+         *                              type: object
+         *                              properties:
+         *                                  name:
+         *                                      type: string
+         *                                      example: "Argentina"
+         *                                  phoneCode: 
+         *                                      type: string
+         *                                      example: "+54"
+         *                                  countryId: 
+         *                                      type: number
+         *                                      example: 1
          *          500:
          *              description: Internal server error
          *              content:
@@ -43,7 +51,7 @@ export default class CountryRouter implements RouterPattern {
          *                          properties:
          *                              message:
          *                                  type: string
-         *                                  example: "No ha sido posible consultar los platos del restaurante"
+         *                                  example: "No ha sido posible consultar los países"
          */
         this.router.get('/get-all', async (req: any, res: any) => {
             try{
@@ -51,7 +59,7 @@ export default class CountryRouter implements RouterPattern {
                 return res.status(200).json(countries);
             }catch(error){
                 console.error(error);
-                return res.status(200).json({ message: 'No ha sido posible consultar los platos del restaurante' });
+                return res.status(200).json({ message: 'No ha sido posible consultar los países' });
             }
         });
     }
