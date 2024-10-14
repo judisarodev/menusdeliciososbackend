@@ -152,11 +152,11 @@ export default class RestaurantRouter implements RouterPattern {
          */
         this.router.post('/create', async (req: any, res: any) => {
             try {
-                await this.createRestaurantUseCase.execute(req.body);
-                return res.status(201).json({ message: 'Restaurante creado exitosamente.' });
+                const { response, status } = await this.createRestaurantUseCase.execute(req.body);
+                return res.status(status).json(response);
             } catch (error) {
                 console.error(error);
-                return res.status(500).json(error);
+                return res.status(500).json({ message: 'No fue posible crear el restaurante' });
             }
         });
 
