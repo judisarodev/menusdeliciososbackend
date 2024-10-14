@@ -41,6 +41,12 @@ export default class RestaurantModel {
             field: 'country_id',
             allowNull: false,
         },
+        isEmailVerified: {
+            type: DataTypes.BOOLEAN,
+            field: 'is_email_verified',
+            allowNull: false,
+            defaultValue: false,
+        },
         menuId: {
             type: DataTypes.INTEGER,
             field: 'menu_id',

@@ -11,13 +11,22 @@ export default class RestaurantEntity {
     private menu: MenuEntity | undefined;
     private restaurantType: RestaurantTypeEntity | undefined;
     private addresses: AddressEntity[] = [];
-    
+    private isEmailVerified: boolean;
 
-    constructor(name: string, email: string, phoneNumber:string, restaurantId?: number){
+    constructor(name: string, email: string, phoneNumber:string, isEmailVerified: boolean, restaurantId?: number){
         this.restaurantId = restaurantId;
         this.name = name; 
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.isEmailVerified = isEmailVerified;
+    }
+
+    getIsEmailVerifie(): boolean {
+        return this.isEmailVerified;
+    }
+
+    setIsEmailVerified(v: boolean):void {
+        this.isEmailVerified = v;
     }
 
     getRestaurantId(): number | undefined {
