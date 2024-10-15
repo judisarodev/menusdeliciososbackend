@@ -157,17 +157,11 @@ export default class DishRouter implements RouterPattern {
          *                   example: "No fue posible crear el plato"
          */
         this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
-            try{           
-                const restaurantId = req.restaurantId;
+            try{ 
                 const { categoryId, name, price, description, image } = req.body;
-                const categoryEntity = await this.getCategoryByIdUseCase.execute(categoryId, restaurantId);
-                if(categoryEntity){
-                    const dishEntity = new DishEntity(name, price, description, image);
-                    dishEntity.setCategory(categoryEntity);
-                    await this.createDishUseCase.execute(dishEntity);
-                    return res.status(200).json({ message: 'Plato creado con éxito' });
-                }
-                return res.status(500).json({ message: 'No fue posible crear el plato' });
+                const dishEntity = new DishEntity(name, price, description, image);
+                await this.createDishUseCase.execute(dishEntity, categoryId);
+                return res.status(200).json({ message: 'Plato creado con éxito' });
             }catch(error){
                 console.error(error);
                 return res.status(500).json({ message: 'No fue posible crear el plato' });

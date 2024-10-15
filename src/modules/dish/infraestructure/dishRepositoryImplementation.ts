@@ -32,12 +32,7 @@ export class DishRepositoryImplementation implements DishRepository{
         }
     }
     
-    async create(dish: DishEntity) {
-        let categoryId;
-        const category = dish.getCategory();
-        if(category){
-            categoryId = category.getCategoryId() || 1;
-        }
+    async create(dish: DishEntity, categoryId: number) {
         await this.models.Product.create({
             name: dish.getName(),
             price: dish.getPrice(),
