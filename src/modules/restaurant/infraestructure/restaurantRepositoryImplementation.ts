@@ -94,11 +94,12 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
     
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 
             
+            console.log('restaurant.addresses', restaurant.addresses);
             if(restaurant.addresses){
                 const addresses = restaurant.addresses.map((address: any) => {
                     return new AddressEntity(address.address, address.addressDetails, address.addressId);
                 });
-                restaurant.setAddresses(addresses);
+                restaurantEntity.setAddresses(addresses);
             }
             return restaurantEntity;
         }catch(error){

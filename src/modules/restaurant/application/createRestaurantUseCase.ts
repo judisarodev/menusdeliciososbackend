@@ -86,7 +86,7 @@ export default class CreateRestaurantUseCase {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear(); 
 
-        const url = `/${ restaurantName }-${day}-${month}-${year}`;
+        const url = `/${ restaurantName.split(" ").join("-") }-${day}-${month}-${year}`;
         return url;
     }
 }
