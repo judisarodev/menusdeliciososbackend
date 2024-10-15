@@ -168,7 +168,7 @@ export default class DishRouter implements RouterPattern {
             }
         });
 
-        this.router.patch('/update', authorizeRestaurant, async (req: any, res: any) => {
+        this.router.put('/update', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { dishId, data } = req.body;
                 await this.updateDishUseCase.execute(dishId, data);
