@@ -38,6 +38,7 @@ export default class Router implements RouterPattern{
         this.router.use('/restaurant', this.restaurantRouter.getRouter());
         this.router.use('/country', this.countryRouter.getRouter());
         this.router.use('/menu', this.menuRouter.getRouter());
+        this.router.use('/get-image', express.static('images/products'));
     }
 
     getRouter(): any {
