@@ -5,4 +5,5 @@ export default interface RestaurantRepository {
     getById(restaurantId: number): Promise<RestaurantEntity>;
     login(email: string, password: string): Promise<any>;
     checkEmail(email: string): Promise<boolean>;
+    getMenuId(restaurantId: number): Promise<number>;
 }

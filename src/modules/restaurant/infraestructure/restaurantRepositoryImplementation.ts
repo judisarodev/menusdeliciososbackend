@@ -12,6 +12,20 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         this.models = SequelizeSetUp.getModels();
     }
 
+    async getMenuId(restaurantId: number): Promise<number>{
+        try{
+            const restaurant = await this.models.Restaurant.findByPk(restaurantId, {
+                attributes: ['menuId']
+            });
+            if(restaurant){
+                return restaurant.menuId;
+            }
+            return 0;
+        }catch(error){
+            throw error;
+        }
+    }
+
     async login(email: string, password: string): Promise<any> {
         const restaurant = await this.models.Restaurant.findOne({
             where: { email },
@@ -54,40 +68,38 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         try{
             const restaurant = await this.models.Restaurant.findOne({
                 where: { restaurantId },
-                attributes: ['restaurantId', 'name', 'email', 'logo'],
                 include: [{
-                    model: this.models.Phone,
-                    as: 'phone',
-                    include: [{
-                        model: this.models.PhoneCode,
-                        as: 'phoneCode'
-                    }]
-                }, {
                     model: this.models.Address,
-                    as: 'address'
+                    as: 'addresses'
                 }, {
                     model: this.models.RestaurantType,
                     as: 'restaurantType'
+                }, {
+                    model: this.models.Country,
+                    as: 'country'
                 }]
             });
-    
-            const addressEntity = new AddressEntity(
-                restaurant.address.address, 
-                restaurant.address.addressDetails, 
-                restaurant.address.addressId);
+
+            const restaurantEntity = new RestaurantEntity(
+                restaurant.name, 
+                restaurant.email, 
+                restaurant.phoneNumber, 
+                restaurant.isEmailVerified,
+                restaurant.restaurantId
+            );
     
             const restaurantTypeEntity = new RestaurantTypeEntity(
                 restaurant.restaurantType.name, 
                 restaurant.restaurantType.restaurantTypeId);
     
-            const restaurantEntity = new RestaurantEntity(
-                restaurant.name, 
-                restaurant.email, 
-                '316777888', 
-                true,
-            );
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 
-    
+            
+            if(restaurant.addresses){
+                const addresses = restaurant.addresses.map((address: any) => {
+                    return new AddressEntity(address.address, address.addressDetails, address.addressId);
+                });
+                restaurant.setAddresses(addresses);
+            }
             return restaurantEntity;
         }catch(error){
             console.error(error)

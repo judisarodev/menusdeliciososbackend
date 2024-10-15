@@ -26,6 +26,13 @@ export default class MenuRouter implements RouterPattern {
          *      summary: Get a menu
          *      tags:
          *          - Menu
+         *      parameters:
+         *          - name: menuId
+         *            in: path
+         *            required: true
+         *            description: ID del menú
+         *            schema:
+         *                type: integer
          *      security:
          *          - BearerAuth: []
          *      responses:
@@ -104,7 +111,6 @@ export default class MenuRouter implements RouterPattern {
          */
         this.router.get('/get/:menuId', authorizeRestaurant, async (req: any, res: any) => {
             try {
-                const restaurantId = req.restaurantId;
                 const { menuId } = req.params;
                 const { response, status } = await this.getMenuUseCase.execute(menuId);
                 return res.status(status).json(response);

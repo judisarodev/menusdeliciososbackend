@@ -186,5 +186,10 @@ export default class SequelizeSetUp {
             foreignKey: 'category_id',
             as: 'products'
         });
+
+        models.Restaurant.hasMany(models.Address, {
+            foreignKey: 'addressId',
+            as: 'addresses'
+        });
     }
 }

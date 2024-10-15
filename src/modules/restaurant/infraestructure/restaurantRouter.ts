@@ -238,13 +238,7 @@ export default class RestaurantRouter implements RouterPattern {
             try {
                 const restaurantId = req.restaurantId;
                 const restaurant = await this.getRestaurantByIdUseCase.execute(restaurantId);
-                return res.status(200).json({
-                    restaurantId: restaurant.getRestaurantId(),
-                    name: restaurant.getName(),
-                    email: restaurant.getEmail(),
-                    logo: restaurant.getLogo(),
-                    restaurantType: restaurant.getRestaurantType()?.getName(),
-                });
+                return res.status(200).json(restaurant);
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar el restaurante' });
