@@ -12,20 +12,22 @@ export class DishRepositoryImplementation implements DishRepository{
     }
 
     async get(dishId: number){
-        try{
+        try{/*
             const product = await this.models.Product.findOne({
                 where: { productId: dishId },
-                attributes: ['name', 'price', 'description', 'image', 'categoryId'],
+                attributes: ['name', 'price', 'description', 'imageId', 'categoryId'],
                 include: [{
                     model: this.models.Category,
                     as: 'category',
-                    attributes: ['name', 'image','icon']
+                    attributes: ['name','icon']
                 }]
             });
             const categoryEntity = new CategoryEntity(product.category.name, product.category.icon, product.categoryId);
             const dishEntity = new DishEntity(product.name, product.price, product.description, product.image, dishId);
             dishEntity.setCategory(categoryEntity);
-            return dishEntity;
+            return dishEntity;*/
+            
+            throw new Error('Not implemented');
         }catch(error){
             console.log(error);
             throw error;

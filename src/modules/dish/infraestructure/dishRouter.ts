@@ -86,7 +86,7 @@ export default class DishRouter implements RouterPattern {
          *                                  type: string
          *                                  example: "Hubo un error al concultar el plato"
         */
-        this.router.get('/get/:dishId', authorizeRestaurant, async (req: any, res: any) => {
+        /*this.router.get('/get/:dishId', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const { dishId } = req.params;
                 const dish = await this.getDishUseCase.execute(dishId);
@@ -101,7 +101,7 @@ export default class DishRouter implements RouterPattern {
                 console.error(error);
                 return res.status(200).json({ message: 'Hubo un error al concultar el plato' });
             }
-        });
+        });*/
 
         /**
          * @swagger

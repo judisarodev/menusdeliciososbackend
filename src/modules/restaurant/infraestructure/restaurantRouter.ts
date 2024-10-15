@@ -7,6 +7,7 @@ import AuthenticationPatternImplementation from '../../../infraestructure/authen
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
 import MenuRepositoryImplementation from '../../menu/infraestructure/menuRepositoryImplementation';
+import GetImagesUseCase from '../application/getImagesUseCase';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -17,7 +18,7 @@ export default class RestaurantRouter implements RouterPattern {
     authenticationPatternImplementation: AuthenticationPatternImplementation;
     addressRepositoryImplementation: AddressRepositoryImplementation;
     menuRepositoryImplementation: MenuRepositoryImplementation;
-    
+    getImagesUseCase: GetImagesUseCase;
 
     constructor() {
         this.router = Router();
@@ -32,6 +33,7 @@ export default class RestaurantRouter implements RouterPattern {
             this.authenticationPatternImplementation,
         );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation);
+        this.getImagesUseCase = new GetImagesUseCase(this.restaurantRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -242,6 +244,17 @@ export default class RestaurantRouter implements RouterPattern {
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar el restaurante' });
+            }
+        });
+
+        this.router.get('/get-images', authorizeRestaurant, async (req: any, res: any) => {
+            try {
+                const restaurantId = req.restaurantId;
+                const { response, status } = await this.getImagesUseCase.execute(restaurantId);
+                return res.status(status).json(response);
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las imágenes' });
             }
         });
     }

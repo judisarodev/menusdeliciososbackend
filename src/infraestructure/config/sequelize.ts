@@ -11,6 +11,7 @@ import PaletteModel from './models/paletteModel';
 import MenuModel from './models/menuModel';
 import CountryModel from './models/countryModel';
 import SurveyModel from './models/surveyModel';
+import ImageModel from './models/imageModel';
 
 export default class SequelizeSetUp {
     static dataBase: { name: string, user: string, password: string, host: string } = {
@@ -111,6 +112,11 @@ export default class SequelizeSetUp {
             ProductModel.getModelOptions(this.sequelize)
         );
         
+        const Image = this.sequelize.define(
+            ImageModel.getModelName(),
+            ImageModel.getModelSchema(),
+            ImageModel.getModelOptions(this.sequelize)
+        );
 
         return {
             Product, 
@@ -122,7 +128,8 @@ export default class SequelizeSetUp {
             Survey,
             Menu,
             Palette,
-            Country
+            Country,
+            Image
         };
     }
 
@@ -165,6 +172,11 @@ export default class SequelizeSetUp {
         models.Product.belongsTo(models.Category, {
             foreignKey: 'categoryId',
             as: 'category'
+        });
+
+        models.Product.belongsTo(models.Image, {
+            foreignKey: 'imageId',
+            as: 'image'
         });
 
         models.Category.belongsTo(models.Menu, {

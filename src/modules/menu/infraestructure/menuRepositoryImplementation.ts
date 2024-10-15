@@ -19,7 +19,11 @@ export default class MenuRepositoryImplementation implements MenuRepository{
                     as: 'categories',
                     include: [{
                         model: this.models.Product,
-                        as: 'products'
+                        as: 'products',
+                        include: [{
+                            model: this.models.Image,
+                            as: 'image'
+                        }]
                     }]
                 }]
             });
@@ -40,7 +44,8 @@ export default class MenuRepositoryImplementation implements MenuRepository{
                     const c = new CategoryEntity(category.name, category.icon, category.categoryId);
                     if(category.products){
                         const dishes = category.products.map((product: any) => {
-                            return new DishEntity(product.name, product.price, product.description, product.image, product.productId);
+                            const image = product && product.image ? product.image.url : '';
+                            return new DishEntity(product.name, product.price, product.description, image, product.productId);
                         });
                         c.setDishes(dishes);
                     }

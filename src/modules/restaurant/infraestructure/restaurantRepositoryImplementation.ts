@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 import AddressEntity from "../../address/domain/addressEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
@@ -120,6 +121,26 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         }catch(error){
             console.error(error);
             throw error; 
+        }
+    }
+
+    async getImages(restaurantId: number): Promise<string[]> {
+        try{
+            const images = await this.models.Image.findAll({
+                attributes: ['url'],
+                where: {
+                    restaurantId: {
+                        [Op.or]: [restaurantId, null]
+                    }
+                }
+            });
+            
+            const urls = images.map((i: any) => {
+                return i.url;
+            });
+            return urls;
+        }catch(error){
+            throw error;
         }
     }
 

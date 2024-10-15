@@ -6,4 +6,5 @@ export default interface RestaurantRepository {
     login(email: string, password: string): Promise<any>;
     checkEmail(email: string): Promise<boolean>;
     getMenuId(restaurantId: number): Promise<number>;
+    getImages(restaurantId: number): Promise<string[]>;
 }

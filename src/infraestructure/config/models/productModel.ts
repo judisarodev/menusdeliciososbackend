@@ -24,8 +24,9 @@ export default class ProductModel {
         description: {
             type: DataTypes.STRING,
         },
-        image: {
-            type: DataTypes.STRING,
+        imageId: {
+            field: 'image_id',
+            type: DataTypes.INTEGER,
         },
         categoryId: {
             type: DataTypes.INTEGER,
