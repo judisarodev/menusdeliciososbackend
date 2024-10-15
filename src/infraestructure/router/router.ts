@@ -6,6 +6,7 @@ import RestaurantTypeRouter from '../../modules/restaurant_type/infraestructure/
 import AddressRouter from '../../modules/address/infraestructure/addressRouter';
 import CountryRouter from '../../modules/country/infraestructure/countryRouter';
 import RestaurantRouter from '../../modules/restaurant/infraestructure/restaurantRouter';
+import MenuRouter from '../../modules/menu/infraestructure/menuRouter';
 
 export default class Router implements RouterPattern{
     router: any;
@@ -15,6 +16,7 @@ export default class Router implements RouterPattern{
     addressRouter: AddressRouter;
     restaurantRouter: RestaurantRouter;
     countryRouter: CountryRouter;
+    menuRouter: MenuRouter;
     
     constructor(){
         this.router = express.Router();
@@ -24,6 +26,7 @@ export default class Router implements RouterPattern{
         this.addressRouter = new AddressRouter();
         this.restaurantRouter = new RestaurantRouter();
         this.countryRouter = new CountryRouter();
+        this.menuRouter = new MenuRouter();
         this.setUpRoutes();
     }
 
@@ -34,7 +37,7 @@ export default class Router implements RouterPattern{
         this.router.use('/address', this.addressRouter.getRouter());
         this.router.use('/restaurant', this.restaurantRouter.getRouter());
         this.router.use('/country', this.countryRouter.getRouter());
-
+        this.router.use('/menu', this.menuRouter.getRouter());
     }
 
     getRouter(): any {

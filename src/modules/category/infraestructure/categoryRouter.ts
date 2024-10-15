@@ -39,7 +39,7 @@ export default class CategoryRouter {
     }
 
     setUpRoutes(){
-        this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
+        /*this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
             try{
                 const restaurantId = req.restaurantId;
                 const categories = await this.getCategoriesUseCase.execute(restaurantId);
@@ -48,11 +48,11 @@ export default class CategoryRouter {
                 console.error(error);
                 return res.status(200).json(error);
             }
-        });
+        });*/
         
         this.router.use('/get-image', express.static('images/categories'));
 
-        this.router.post('/upload-image/:categoryId', authorizeRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
+        /*this.router.post('/upload-image/:categoryId', authorizeRestaurant, this.uploadMiddleware.single('image'), async (req: any, res: any) => {
             try {
                 const { categoryId } = req.params;
                 await this.updateImageUseCase.execute(categoryId, req.file.filename);
@@ -63,7 +63,7 @@ export default class CategoryRouter {
             } catch (error) {
                 res.status(400).send({ error: 'Error al cargar la imagen' });
             }
-        });
+        });*/
 
         this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{

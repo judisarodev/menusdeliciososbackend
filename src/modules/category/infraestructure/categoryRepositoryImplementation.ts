@@ -28,11 +28,11 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
         return categoryEntity;
     }
 
-    async getAll(restaurantId: number): Promise<CategoryEntity[]> {
+    async getAll(menuId: number): Promise<CategoryEntity[]> {
         try{
             const categories = await this.models.Category.findAll({
-                attributes: ['name', 'image', 'icon', 'categoryId'],
-                where: { restaurantId }
+                attributes: ['name', 'icon', 'categoryId'],
+                where: { menuId }
             });
             const categoryEntities = [];
             for(const category of categories){

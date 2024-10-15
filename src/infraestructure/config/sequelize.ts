@@ -177,6 +177,14 @@ export default class SequelizeSetUp {
             as: 'palette'
         });
 
+        models.Menu.hasMany(models.Category, {
+            foreignKey: 'menu_id',
+            as: 'categories'
+        });
 
+        models.Category.hasMany(models.Product, {
+            foreignKey: 'category_id',
+            as: 'products'
+        });
     }
 }
