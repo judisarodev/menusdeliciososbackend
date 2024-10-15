@@ -26,4 +26,23 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
             menuId
         });
     }
+
+    async delete(categoryId: number): Promise<void>{
+        try{
+            await this.models.Product.destroy({
+                where: {
+                    categoryId,
+                }
+            });
+    
+            await this.models.Category.destroy({
+                where: {
+                    categoryId,
+                }
+            });
+        }catch(error){
+            console.log(error);
+            throw error; 
+        }
+    }
 }
