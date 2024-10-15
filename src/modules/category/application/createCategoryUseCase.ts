@@ -7,7 +7,11 @@ export default class CreateCategoryUseCase {
 
     }
 
-    async execute(categoryEntity: CategoryEntity, restaurantId: number){
-        await this.categoryRepositoryImplementation.create(categoryEntity);
+    async execute(categoryEntity: CategoryEntity, menuId: number){
+        await this.categoryRepositoryImplementation.create(categoryEntity, menuId);
+        return {
+            response: { message: 'Categoría creada con éxito' },
+            status: 201
+        }
     }
 }

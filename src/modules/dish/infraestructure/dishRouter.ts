@@ -1,6 +1,5 @@
 import express, { Router } from 'express';
 import { DishRepositoryImplementation } from './dishRepositoryImplementation';
-import GetAllDishesUseCase from './../application/getAllDishesUseCase';
 import CreateDishUseCase from '../application/createDishUseCase';
 import UpdateDishUseCase from '../application/updateDishUseCase';
 import DeleteDishUseCase from '../application/deleteDishUseCase';
@@ -9,32 +8,27 @@ import GetCategoryByIdUseCase from '../../category/application/getCategoryByIdUs
 import { DishEntity } from '../domain/dishEntity';
 import RouterPattern from '../../../domain/routerPattern';
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
-import GetCategoriesUseCase from '../../category/application/getCategoriesUseCase';
 import GetDishUseCase from '../application/getDishUseCase';
 
 export default class DishRouter implements RouterPattern {
     router: Router;
-    getAllDishesUseCase: GetAllDishesUseCase;
     createDishUseCase: CreateDishUseCase;
     updateDishUseCase: UpdateDishUseCase;
     deleteDishUseCase: DeleteDishUseCase;
     dishRepositoryImplementation: DishRepositoryImplementation;
     getCategoryByIdUseCase: GetCategoryByIdUseCase;
     categoryRepositoryImplementation: CategoryRepositoryImplementation;
-    getCategoriesUseCase: GetCategoriesUseCase;
     getDishUseCase: GetDishUseCase;
     
     constructor(){
         this.router = express.Router();
         this.dishRepositoryImplementation = new DishRepositoryImplementation();
-        this.getAllDishesUseCase = new GetAllDishesUseCase(this.dishRepositoryImplementation);
         this.createDishUseCase = new CreateDishUseCase(this.dishRepositoryImplementation);
         this.updateDishUseCase = new UpdateDishUseCase(this.dishRepositoryImplementation);
         this.deleteDishUseCase = new DeleteDishUseCase(this.dishRepositoryImplementation);
 
         this.categoryRepositoryImplementation = new CategoryRepositoryImplementation();
         this.getCategoryByIdUseCase = new GetCategoryByIdUseCase(this.categoryRepositoryImplementation);
-        this.getCategoriesUseCase = new GetCategoriesUseCase(this.categoryRepositoryImplementation);
 
         this.getDishUseCase = new GetDishUseCase(this.dishRepositoryImplementation);
 
@@ -42,49 +36,6 @@ export default class DishRouter implements RouterPattern {
     }
 
     setUpRoutes(){
-        /**
-         * @swagger
-         * /api/dish/get-all:
-         *   get:
-         *      summary: Get all dishes on a restaurant
-         *      tags:
-         *          - Dish
-         *      security:
-         *          - BearerAuth: []
-         *      responses:
-         *          200:
-         *              description: Sucess
-         *              content:
-         *                  application/json:
-         *                      schema:
-         *                          type: object
-         *                          properties: 
-         *                              dishId: 
-         *                                  type: number
-         *                                  example: 1
-         *          500:
-         *              description: Internal server error
-         *              content:
-         *                  application/json:
-         *                      schema:
-         *                          type: object
-         *                          properties:
-         *                              message:
-         *                                  type: string
-         *                                  example: "No ha sido posible consultar los platos del restaurante"
-         */
-        this.router.get('/get-all', authorizeRestaurant, async (req: any, res: any) => {
-            try{
-                const restaurantId = req.restaurantId;
-                const categories = await this.getCategoriesUseCase.execute(restaurantId);
-                const dishes = await this.getAllDishesUseCase.execute(categories);
-                return res.status(200).json(dishes);
-            }catch(error){
-                console.error(error);
-                return res.status(200).json({ message: 'No ha sido posible consultar los platos del restaurante' });
-            }
-        });
-
         /**
          * @swagger
          * /api/get/{dishId}:

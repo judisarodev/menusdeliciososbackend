@@ -4,16 +4,7 @@ import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 
 export default class CategoryRepositoryImplementation implements CategoryRepository {
     models: any = SequelizeSetUp.getModels();
-
-    async updateImage(categoryId: number, image: string): Promise<void> {
-        try{
-            await this.models.Category.update({ image }, { where: { categoryId } }); 
-        }catch(error){
-            console.error(error);
-            throw error;
-        }
-    }
-
+    
     async getById(categoryId: number, restaurantId: number): Promise<CategoryEntity> {
         const category = await this.models.Category.findOne({
             where: { categoryId, restaurantId },
@@ -28,27 +19,11 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
         return categoryEntity;
     }
 
-    async getAll(menuId: number): Promise<CategoryEntity[]> {
-        try{
-            const categories = await this.models.Category.findAll({
-                attributes: ['name', 'icon', 'categoryId'],
-                where: { menuId }
-            });
-            const categoryEntities = [];
-            for(const category of categories){
-                categoryEntities.push(new CategoryEntity(category.name, category.icon, category.categoryId));
-            }
-            return categoryEntities;
-        }catch(error){
-            console.error(error);
-            throw error;
-        }
-    }
-
-    async create(categoryEntity: CategoryEntity) {
+    async create(categoryEntity: CategoryEntity, menuId: number): Promise<void> {
         await this.models.Category.create({
             name: categoryEntity.getName(),
-            icon: categoryEntity.getIcon()
+            icon: categoryEntity.getIcon(),
+            menuId
         });
     }
 }
