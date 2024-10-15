@@ -5,6 +5,7 @@ import { CategoryEntity } from '../domain/categoryEntity';
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import RestaurantRepositoryImplementation from '../../restaurant/infraestructure/restaurantRepositoryImplementation';
 import DeleteCategoryUseCase from '../application/deleteCategoryUseCase';
+import UpdateCategoryUseCase from '../application/updateCategoryUseCase';
 
 export default class CategoryRouter {
     router: Router;
@@ -12,6 +13,7 @@ export default class CategoryRouter {
     createCategoryUseCase: CreateCategoryUseCase;
     restaurantRepositoryImplementation: RestaurantRepositoryImplementation;
     deleteCategoryUseCase: DeleteCategoryUseCase;
+    updateCategoryUseCase: UpdateCategoryUseCase;
     storage: any;
     uploadMiddleware: any;
         
@@ -25,6 +27,7 @@ export default class CategoryRouter {
         // Category Use Cases Instances
         this.createCategoryUseCase = new CreateCategoryUseCase(this.categoryRepositoryImplementation);
         this.deleteCategoryUseCase = new DeleteCategoryUseCase(this.categoryRepositoryImplementation);
+        this.updateCategoryUseCase = new UpdateCategoryUseCase(this.categoryRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -50,6 +53,17 @@ export default class CategoryRouter {
             }catch(error){
                 console.error(error);
                 return res.status(500).json({ message: 'Hubo un error al eliminar la categoría' });
+            }
+        });
+
+        this.router.put('/update', authorizeRestaurant, async (req: any, res: any) => {
+            try{
+                const { categoryId, name, icon } = req.body;
+                const { response, status } = await this.updateCategoryUseCase.execute(name, icon, categoryId);
+                return res.status(status).json(response)
+            }catch(error){
+                console.error(error);
+                return res.status(500).json({ message: 'Hubo un error al actualizar la categoría' });
             }
         });
     }

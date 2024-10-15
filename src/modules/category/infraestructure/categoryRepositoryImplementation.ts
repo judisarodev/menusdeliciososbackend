@@ -45,4 +45,19 @@ export default class CategoryRepositoryImplementation implements CategoryReposit
             throw error; 
         }
     }
+
+    async update(name: string, icon: string, categoryId: number): Promise<void>{
+        try{
+            await this.models.Category.update({
+                name, icon
+            }, {
+                where: {
+                    categoryId,
+                }
+            });
+        }catch(error){
+            console.log(error);
+            throw error; 
+        }
+    }
 }
