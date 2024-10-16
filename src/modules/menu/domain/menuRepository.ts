@@ -5,4 +5,5 @@ export default interface MenuRepository {
     create(layout: string, font: string, paletteId: number, url: string): Promise<void>;
     get(menuId: number): Promise<MenuEntity>;
     getPalettes(): Promise<PaletteEntity[]>;
+    update(object: any, menuId: number): Promise<any>;
 }

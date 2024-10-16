@@ -4,18 +4,21 @@ import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddlew
 import MenuRepositoryImplementation from '../../menu/infraestructure/menuRepositoryImplementation';
 import GetMenuUseCase from '../application/getMenuUseCase';
 import GetPalettesUseCase from '../application/getPalettesUseCase';
+import UpdateMenuUseCase from '../application/updateMenuUseCase';
 
 export default class MenuRouter implements RouterPattern {
     router: Router;
     menuRepositoryImplementation: MenuRepositoryImplementation;
     getMenuUseCase: GetMenuUseCase;
     getPalettesUseCase: GetPalettesUseCase;
+    updateMenuUseCase: UpdateMenuUseCase;
 
     constructor() {
         this.router = Router();
         this.menuRepositoryImplementation = new MenuRepositoryImplementation();
         this.getMenuUseCase = new GetMenuUseCase(this.menuRepositoryImplementation);
         this.getPalettesUseCase = new GetPalettesUseCase(this.menuRepositoryImplementation);
+        this.updateMenuUseCase = new UpdateMenuUseCase(this.menuRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -128,6 +131,18 @@ export default class MenuRouter implements RouterPattern {
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las paletas' });
+            }
+        });
+
+        this.router.patch('/update/:menuId', authorizeRestaurant, async (req: any, res: any) => {
+            try {
+                const { menuId } = req.params;
+                const object = req.body;
+                const { response, status } = await this.updateMenuUseCase.execute(object, menuId);
+                return res.status(status).json(response);
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ messaage: 'Ha ocurrido un error al actualizar el menú' });
             }
         });
     }

@@ -76,6 +76,19 @@ export default class MenuRepositoryImplementation implements MenuRepository{
         }
     }
 
+    async update(object: any, menuId: number){
+        try{
+            return await this.models.Menu.update(object, {
+                where: {
+                    menuId
+                }
+            });
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
     async create(layout: string, font: string, paletteId: number, url: string){
         
         const menu = await this.models.Menu.create({
