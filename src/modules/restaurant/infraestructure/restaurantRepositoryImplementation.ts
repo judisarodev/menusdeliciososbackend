@@ -127,7 +127,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
     async getImages(restaurantId: number): Promise<string[]> {
         try{
             const images = await this.models.Image.findAll({
-                attributes: ['url'],
+                attributes: ['url', 'imageId'],
                 where: {
                     restaurantId: {
                         [Op.or]: [restaurantId, null]
@@ -135,10 +135,7 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
                 }
             });
             
-            const urls = images.map((i: any) => {
-                return i.url;
-            });
-            return urls;
+            return images;
         }catch(error){
             throw error;
         }

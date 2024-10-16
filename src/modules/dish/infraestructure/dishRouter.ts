@@ -158,9 +158,9 @@ export default class DishRouter implements RouterPattern {
          */
         this.router.post('/create', authorizeRestaurant, async (req: any, res: any) => {
             try{ 
-                const { categoryId, name, price, description, image } = req.body;
-                const dishEntity = new DishEntity(name, price, description, image);
-                await this.createDishUseCase.execute(dishEntity, categoryId);
+                const { categoryId, name, price, description, imageId } = req.body;
+                const dishEntity = new DishEntity(name, price, description);
+                await this.createDishUseCase.execute(dishEntity, categoryId, imageId);
                 return res.status(200).json({ message: 'Plato creado con éxito' });
             }catch(error){
                 console.error(error);

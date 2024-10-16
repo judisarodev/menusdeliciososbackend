@@ -34,12 +34,12 @@ export class DishRepositoryImplementation implements DishRepository{
         }
     }
     
-    async create(dish: DishEntity, categoryId: number) {
+    async create(dish: DishEntity, categoryId: number, imageId: number) {
         await this.models.Product.create({
             name: dish.getName(),
             price: dish.getPrice(),
             description: dish.getDescription(),
-            image: dish.getImage(),
+            imageId,
             categoryId
         });
     }
