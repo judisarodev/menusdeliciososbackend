@@ -28,7 +28,7 @@ export default class PaletteModel {
             allowNull: false,
         },
         secondaryTextColor: {
-            field: 'secondaryTextColor',
+            field: 'secondary_text_color',
             type: DataTypes.STRING,
             allowNull: false,
         }

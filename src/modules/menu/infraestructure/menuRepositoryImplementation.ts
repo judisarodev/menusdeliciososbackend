@@ -2,6 +2,7 @@ import SequelizeSetUp from "../../../infraestructure/config/sequelize";
 import { CategoryEntity } from "../../category/domain/categoryEntity";
 import { DishEntity } from "../../dish/domain/dishEntity";
 import ImageEntity from "../../image/domain/imageEntity";
+import PaletteEntity from "../../palette/domain/paletteEntity";
 import MenuEntity from "../domain/MenuEntity";
 import MenuRepository from "../domain/menuRepository";
 
@@ -77,6 +78,14 @@ export default class MenuRepositoryImplementation implements MenuRepository{
             paletteId,
         });
         return menu.menuId;
+    }
+
+    async getPalettes(): Promise<PaletteEntity[]> {
+        const palettes = await this.models.Palette.findAll();
+        const paletteEntities = palettes.map((p: any) => {
+            return new PaletteEntity(p.primaryColor, p.secondaryColor, p.primaryTextColor, p.secondaryTextColor, p.paletteId);
+        });
+        return paletteEntities; 
     }
     
 }

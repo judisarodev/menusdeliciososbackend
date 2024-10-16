@@ -3,18 +3,19 @@ import RouterPattern from "../../../domain/routerPattern";
 import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddleware';
 import MenuRepositoryImplementation from '../../menu/infraestructure/menuRepositoryImplementation';
 import GetMenuUseCase from '../application/getMenuUseCase';
+import GetPalettesUseCase from '../application/getPalettesUseCase';
 
 export default class MenuRouter implements RouterPattern {
     router: Router;
     menuRepositoryImplementation: MenuRepositoryImplementation;
     getMenuUseCase: GetMenuUseCase;
-    
+    getPalettesUseCase: GetPalettesUseCase;
 
     constructor() {
         this.router = Router();
         this.menuRepositoryImplementation = new MenuRepositoryImplementation();
         this.getMenuUseCase = new GetMenuUseCase(this.menuRepositoryImplementation);
-
+        this.getPalettesUseCase = new GetPalettesUseCase(this.menuRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -117,6 +118,16 @@ export default class MenuRouter implements RouterPattern {
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar el menú' });
+            }
+        });
+
+        this.router.get('/get-palettes', async (req: any, res: any) => {
+            try {
+                const { response, status } = await this.getPalettesUseCase.execute();
+                return res.status(status).json(response);
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las paletas' });
             }
         });
     }
