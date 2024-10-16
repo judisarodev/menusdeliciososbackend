@@ -99,4 +99,8 @@ export default class MenuEntity {
     setUrl(url: string): void {
         this.url = url;
     }
+
+    setPalette(p: PaletteEntity){
+        this.palette = p;
+    }
 }

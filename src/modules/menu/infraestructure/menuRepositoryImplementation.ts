@@ -27,12 +27,15 @@ export default class MenuRepositoryImplementation implements MenuRepository{
                             as: 'image'
                         }]
                     }]
+                }, {
+                    model: this.models.Palette,
+                    as: 'palette'
                 }]
             });
             
             const menuEntity = new MenuEntity(
                 menu.showDescription, 
-                menu.showImage, 
+                menu.showImages, 
                 menu.showNavigation, 
                 menu.showIcons, 
                 menu.layout, 
@@ -40,6 +43,14 @@ export default class MenuRepositoryImplementation implements MenuRepository{
                 menu.url, 
                 menuId
             );
+
+            menuEntity.setPalette(new PaletteEntity(
+                menu.palette.primaryColor,
+                menu.palette.secondaryColor,
+                menu.palette.primaryTextColor,
+                menu.palette.secondaryTextColor,
+                menu.palette.paletteId
+            ));
 
             if(menu.categories){
                 const categories = menu.categories.map((category: any) => {
