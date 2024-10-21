@@ -141,4 +141,22 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         }
     }
 
+    async getBackgroundImages(restaurantId: number): Promise<string[]> {
+        try{
+            const images = await this.models.Image.findAll({
+                attributes: ['url', 'imageId'],
+                where: {
+                    restaurantId: {
+                        [Op.or]: [restaurantId, null]
+                    },
+                    isBackground: true
+                }
+            });
+            
+            return images;
+        }catch(error){
+            throw error;
+        }
+    }
+
 }

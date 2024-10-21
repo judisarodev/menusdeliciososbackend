@@ -1,4 +1,5 @@
 import { CategoryEntity } from "../../category/domain/categoryEntity";
+import ImageEntity from "../../image/domain/imageEntity";
 import PaletteEntity from "../../palette/domain/paletteEntity";
 
 export default class MenuEntity {
@@ -12,6 +13,7 @@ export default class MenuEntity {
     private palette: PaletteEntity | undefined;
     private url: string;
     private categories: CategoryEntity[] | undefined;
+    private backgroundImage: ImageEntity | undefined;
 
     constructor(showDescription: boolean, showImage: boolean, showNavigation: boolean, showIcons: boolean, layout: string, font: string,  url: string, menuId?: number){
         this.showDescription = showDescription;
@@ -26,6 +28,14 @@ export default class MenuEntity {
 
     getCategories(): CategoryEntity[] | undefined{
         return this.categories;
+    }
+
+    setBackgroundImage(image: ImageEntity) {
+        this.backgroundImage = image;
+    }
+
+    getBackgroundImage(): ImageEntity | undefined {
+        return this.backgroundImage;
     }
 
     setCategories(categories: CategoryEntity[]){

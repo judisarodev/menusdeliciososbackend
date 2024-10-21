@@ -257,6 +257,17 @@ export default class RestaurantRouter implements RouterPattern {
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las imágenes' });
             }
         });
+
+        this.router.get('/get-background-images', authorizeRestaurant, async (req: any, res: any) => {
+            try {
+                const restaurantId = req.restaurantId;
+                const { response, status } = await this.getImagesUseCase.execute(restaurantId, true);
+                return res.status(status).json(response);
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las imágenes' });
+            }
+        });
     }
     getRouter(): Router {
         return this.router;

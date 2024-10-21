@@ -48,6 +48,10 @@ export default class MenuModel {
             field: 'palette_id',
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        backgroundImageId: {
+            field: 'background_image_id',
+            type: DataTypes.INTEGER,
         }
     };
     static options: any = {

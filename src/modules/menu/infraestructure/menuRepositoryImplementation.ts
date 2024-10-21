@@ -17,6 +17,9 @@ export default class MenuRepositoryImplementation implements MenuRepository{
         try{
             const menu = await this.models.Menu.findByPk(menuId, {
                 include: [{
+                    model: this.models.Image,
+                    as: 'backgroundImage'
+                }, {
                     model: this.models.Category,
                     as: 'categories',
                     include: [{
@@ -43,6 +46,10 @@ export default class MenuRepositoryImplementation implements MenuRepository{
                 menu.url, 
                 menuId
             );
+
+            if(menu.backgroundImage){
+                menuEntity.setBackgroundImage(new ImageEntity(menu.backgroundImage.url, menu.backgroundImage.imageId));
+            }
 
             menuEntity.setPalette(new PaletteEntity(
                 menu.palette.primaryColor,

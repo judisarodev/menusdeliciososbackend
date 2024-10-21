@@ -189,6 +189,11 @@ export default class SequelizeSetUp {
             as: 'palette'
         });
 
+        models.Menu.belongsTo(models.Image, {
+            foreignKey: 'background_image_id',
+            as: 'backgroundImage'
+        });
+
         models.Menu.hasMany(models.Category, {
             foreignKey: 'menu_id',
             as: 'categories'

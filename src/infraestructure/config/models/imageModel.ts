@@ -19,6 +19,11 @@ export default class ImageModel {
         restaurantId: {
             field: 'restaurant_id',
             type: DataTypes.INTEGER
+        },
+        isBackground: {
+            field: 'is_background',
+            type: DataTypes.BOOLEAN,
+            defaultValue: 0,
         }
     };
     static options: any = {
