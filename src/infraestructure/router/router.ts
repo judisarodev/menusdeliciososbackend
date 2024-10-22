@@ -7,6 +7,7 @@ import AddressRouter from '../../modules/address/infraestructure/addressRouter';
 import CountryRouter from '../../modules/country/infraestructure/countryRouter';
 import RestaurantRouter from '../../modules/restaurant/infraestructure/restaurantRouter';
 import MenuRouter from '../../modules/menu/infraestructure/menuRouter';
+import ClientRouter from '../../modules/client/infraestructure/clientRouter';
 
 export default class Router implements RouterPattern{
     router: any;
@@ -17,6 +18,7 @@ export default class Router implements RouterPattern{
     restaurantRouter: RestaurantRouter;
     countryRouter: CountryRouter;
     menuRouter: MenuRouter;
+    clientRouter: ClientRouter;
     
     constructor(){
         this.router = express.Router();
@@ -27,6 +29,7 @@ export default class Router implements RouterPattern{
         this.restaurantRouter = new RestaurantRouter();
         this.countryRouter = new CountryRouter();
         this.menuRouter = new MenuRouter();
+        this.clientRouter = new ClientRouter();
         this.setUpRoutes();
     }
 
@@ -38,6 +41,7 @@ export default class Router implements RouterPattern{
         this.router.use('/restaurant', this.restaurantRouter.getRouter());
         this.router.use('/country', this.countryRouter.getRouter());
         this.router.use('/menu', this.menuRouter.getRouter());
+        this.router.use('/client', this.clientRouter.getRouter());
         this.router.use('/get-image', express.static('images/products'));
     }
 
