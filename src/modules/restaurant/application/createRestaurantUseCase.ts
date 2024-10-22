@@ -44,8 +44,16 @@ export default class CreateRestaurantUseCase {
                 status: 409
             }
         }
+        const url = this.createUrl(name);
+        const duplicatedRestaurantUrl = await this.checkRestauarntUrl(url);
+        if(duplicatedRestaurantUrl){
+            return {
+                response: {  message: 'El nombre del restaurante ya está registrado'},
+                status: 406
+            }
+        }
 
-        const restaurantId = await this.createRestaurant(restaurantTypeId, name, email, phoneNumber, password, countryId);
+        const restaurantId = await this.createRestaurant(url, restaurantTypeId, name, email, phoneNumber, password, countryId);
         await this.createAddress(address, addressDetails, restaurantId);
 
         const jwt = await this.authenticationPatternImplementation.signToken(restaurantId);
@@ -59,15 +67,24 @@ export default class CreateRestaurantUseCase {
         }
     }
 
+    async checkRestauarntUrl(restaurantUrl: string): Promise<boolean>{
+        const urls =  await this.menuRepositoryImplementation.getAllRestaurantUrls();
+        for(const url of urls){
+            if(url === restaurantUrl){
+                return true;
+            }
+        }
+        return false;
+    }
+
     async checkEmail(email: string): Promise<boolean>{
         return await this.restaurantRepositoryImplementation.checkEmail(email);
     }
 
-    async createRestaurant(restaurantTypeId: number, name: string, email: string, phoneNumber: string, password: string, countryId: number): Promise<number>{
+    async createRestaurant(url: string, restaurantTypeId: number, name: string, email: string, phoneNumber: string, password: string, countryId: number): Promise<number>{
         const paletteId = restaurantTypeId;
         const layout = 'linear';
         const font = 'sans-serif';
-        const url = this.createUrl(name);
         const menuId = await this.menuRepositoryImplementation.create(layout, font, paletteId, url);
         
         const restaurantEntity = new RestaurantEntity(name, email, phoneNumber, false);
@@ -81,12 +98,7 @@ export default class CreateRestaurantUseCase {
     }
 
     createUrl(restaurantName: string): string{
-        const date = new Date();
-        const day = String(date.getDate()).padStart(2, '0'); 
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear(); 
-
-        const url = `/${ restaurantName.split(" ").join("-") }-${day}-${month}-${year}`;
-        return url;
+        const name = restaurantName.toLowerCase();
+        return `/${ name.split(" ").join("-") }`;
     }
 }

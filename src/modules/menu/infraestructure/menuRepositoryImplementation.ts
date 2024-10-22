@@ -118,5 +118,17 @@ export default class MenuRepositoryImplementation implements MenuRepository{
         });
         return paletteEntities; 
     }
+
+    async getAllRestaurantUrls(): Promise<string[]>{
+        try{
+            const menus = await this.models.Menu.findAll({
+                attributes: ['url']
+            });
+            return menus.map((m: any) => m.url);
+        }catch(error){
+            console.error(error);
+            throw error; 
+        }
+    }
     
 }
