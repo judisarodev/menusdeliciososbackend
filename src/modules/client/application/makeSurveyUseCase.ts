@@ -13,8 +13,7 @@ export default class MakeSurveyUseCase {
 
     async execute(score: number, comments: string, url: string): Promise<any>{
         const restaurantId = await this.menuRepositoryImplementation.getRestaurantIdByUrl(url);
-        console.log('restaurantId', restaurantId);
-        //await this.clientRepositoryImplementation.makeSurvey(score, comments, restaurantId);
+        await this.clientRepositoryImplementation.makeSurvey(score, comments, restaurantId);
         return {
             response: { message: 'Encuesta registrada con éxito' },
             status: 200
