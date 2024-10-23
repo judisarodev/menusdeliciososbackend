@@ -79,8 +79,10 @@ export default class ClientRepositoryImplementation implements ClientRepository{
             throw error;
         }
     }
-    makeSurvey(): Promise<void> {
-        throw new Error("Method not implemented.");
+    async makeSurvey(score: number, comments: string, restaurantId: number): Promise<void> {
+        await this.models.Survey.create({
+            score, comments, restaurantId
+        });
     }
     models: any = SequelizeSetUp.getModels();
 

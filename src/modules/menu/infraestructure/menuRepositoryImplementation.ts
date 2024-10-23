@@ -131,4 +131,25 @@ export default class MenuRepositoryImplementation implements MenuRepository{
         }
     }
     
+    async getRestaurantIdByUrl(url: string): Promise<number>{
+        try{
+            const menu = await this.models.Menu.findOne({
+                where: {
+                    url: '/' + url,
+                },
+                attributes: ['menuId'],
+                include: [{
+                    model: this.models.Restaurant,
+                    as: 'restaurant',
+                    attributes: ['restaurantId']
+                }]
+            });
+    
+            return menu.restaurant.restaurantId;
+        }catch(error){
+            console.error(error);
+            throw error;
+        }
+    }
+
 }

@@ -7,4 +7,5 @@ export default interface MenuRepository {
     getPalettes(): Promise<PaletteEntity[]>;
     update(object: any, menuId: number): Promise<any>;
     getAllRestaurantUrls(): Promise<String[]>;
+    getRestaurantIdByUrl(url: string): Promise<number>;
 }

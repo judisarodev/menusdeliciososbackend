@@ -199,6 +199,11 @@ export default class SequelizeSetUp {
             as: 'categories'
         });
 
+        models.Menu.hasOne(models.Restaurant, {
+            foreignKey: 'menu_id',
+            as: 'restaurant'
+        });
+
         models.Category.hasMany(models.Product, {
             foreignKey: 'category_id',
             as: 'products'
