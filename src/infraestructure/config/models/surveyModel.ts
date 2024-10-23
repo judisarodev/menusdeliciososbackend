@@ -23,6 +23,9 @@ export default class SurveyModel {
             field: 'restaurant_id',
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        time: {
+            type: DataTypes.DATE,
         }
     };
     static options: any = {

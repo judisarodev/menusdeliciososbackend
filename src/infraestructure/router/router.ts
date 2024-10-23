@@ -8,6 +8,7 @@ import CountryRouter from '../../modules/country/infraestructure/countryRouter';
 import RestaurantRouter from '../../modules/restaurant/infraestructure/restaurantRouter';
 import MenuRouter from '../../modules/menu/infraestructure/menuRouter';
 import ClientRouter from '../../modules/client/infraestructure/clientRouter';
+import SurveyRouter from '../../modules/survey/infraestructure/surveyRouter';
 
 export default class Router implements RouterPattern{
     router: any;
@@ -19,6 +20,7 @@ export default class Router implements RouterPattern{
     countryRouter: CountryRouter;
     menuRouter: MenuRouter;
     clientRouter: ClientRouter;
+    surveyRouter: SurveyRouter;
     
     constructor(){
         this.router = express.Router();
@@ -30,6 +32,8 @@ export default class Router implements RouterPattern{
         this.countryRouter = new CountryRouter();
         this.menuRouter = new MenuRouter();
         this.clientRouter = new ClientRouter();
+        this.surveyRouter = new SurveyRouter();
+
         this.setUpRoutes();
     }
 
@@ -42,6 +46,7 @@ export default class Router implements RouterPattern{
         this.router.use('/country', this.countryRouter.getRouter());
         this.router.use('/menu', this.menuRouter.getRouter());
         this.router.use('/client', this.clientRouter.getRouter());
+        this.router.use('/survey', this.surveyRouter.getRouter());
         this.router.use('/get-image', express.static('images/products'));
     }
 

@@ -1,17 +1,28 @@
 import AddressEntity from "../../address/domain/addressEntity";
 import MenuEntity from "../../menu/domain/MenuEntity";
+import RestaurantEntity from "../../restaurant/domain/restaurantEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 
-export default class RestaurantEntity {
+export default class SurveyEntity {
     private surveyId: number | undefined;
     private score: number;
     private comments: string;
     private restaurant: RestaurantEntity | undefined;
+    private time: Date;
 
-    constructor(score: number, comments: string, surveyId?: number){
+    constructor(score: number, comments: string, time: Date, surveyId?: number){
         this.score = score;
         this.comments = comments;
         this.surveyId = surveyId;
+        this.time = time;
+    }
+
+    getTime(): Date {
+        return this.time;
+    }
+
+    setTime(d: Date){
+        this.time = d;
     }
 
     getScore(): number {
