@@ -14,6 +14,24 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
         this.models = SequelizeSetUp.getModels();
     }
 
+    async update(obj: any, restaurantId: number): Promise<boolean> {
+        try{
+            const [updatedRows] = await this.models.Restaurant.update(obj, {
+                where: {
+                    restaurantId
+                }
+            });
+            
+            if(updatedRows){
+                return true;
+            }
+
+            return false; 
+        }catch(error){
+           throw error; 
+        }
+    }
+
     async getMenuId(restaurantId: number): Promise<number>{
         try{
             const restaurant = await this.models.Restaurant.findByPk(restaurantId, {

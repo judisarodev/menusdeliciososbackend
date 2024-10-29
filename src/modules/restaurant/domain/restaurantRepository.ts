@@ -8,4 +8,5 @@ export default interface RestaurantRepository {
     getMenuId(restaurantId: number): Promise<number>;
     getImages(restaurantId: number): Promise<any>;
     getBackgroundImages(restaurantId: number): Promise<any>;
+    update(obj: any, restaurantId: number): Promise<boolean>;
 }

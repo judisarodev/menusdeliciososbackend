@@ -8,6 +8,7 @@ import authorizeRestaurant from '../../../middlewares/authorizeRestaurantMiddlew
 import AddressRepositoryImplementation from '../../address/infraestructure/addressRepositoryImplementation';
 import MenuRepositoryImplementation from '../../menu/infraestructure/menuRepositoryImplementation';
 import GetImagesUseCase from '../application/getImagesUseCase';
+import UpdateRestaurantUseCase from '../application/updateRestaurantUseCase';
 
 export default class RestaurantRouter implements RouterPattern {
     router: Router;
@@ -19,6 +20,7 @@ export default class RestaurantRouter implements RouterPattern {
     addressRepositoryImplementation: AddressRepositoryImplementation;
     menuRepositoryImplementation: MenuRepositoryImplementation;
     getImagesUseCase: GetImagesUseCase;
+    updateRestaurantUseCase: UpdateRestaurantUseCase;
 
     constructor() {
         this.router = Router();
@@ -34,6 +36,7 @@ export default class RestaurantRouter implements RouterPattern {
         );
         this.getRestaurantByIdUseCase = new GetRestaurantByIdUseCase(this.restaurantRepositoryImplementation);
         this.getImagesUseCase = new GetImagesUseCase(this.restaurantRepositoryImplementation);
+        this.updateRestaurantUseCase = new UpdateRestaurantUseCase(this.restaurantRepositoryImplementation);
         this.setUpRoutes();
     }
 
@@ -266,6 +269,18 @@ export default class RestaurantRouter implements RouterPattern {
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ messaage: 'Ha ocurrido un error al consultar las imágenes' });
+            }
+        });
+
+        this.router.put('/update', authorizeRestaurant, async (req: any, res: any) => {
+            try{
+                const restaurantId = req.restaurantId;
+                const obj = req.body;
+                const { response, status } = await this.updateRestaurantUseCase.execute(obj, restaurantId);
+                return res.status(status).json(response);
+            }catch(error){
+                console.error(error);
+                return res.status(500).json({ messaage: 'Ha ocurrido un error al actualizar el restaurante' });
             }
         });
     }
