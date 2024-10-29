@@ -1,4 +1,5 @@
 import AddressEntity from "../../address/domain/addressEntity";
+import CountryEntity from "../../country/domain/countryEntity";
 import MenuEntity from "../../menu/domain/MenuEntity";
 import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEntity";
 
@@ -12,6 +13,7 @@ export default class RestaurantEntity {
     private restaurantType: RestaurantTypeEntity | undefined;
     private addresses: AddressEntity[] = [];
     private isEmailVerified: boolean;
+    private country: CountryEntity | undefined;
 
     constructor(name: string, email: string, phoneNumber:string, isEmailVerified: boolean, restaurantId?: number){
         this.restaurantId = restaurantId;
@@ -19,6 +21,14 @@ export default class RestaurantEntity {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.isEmailVerified = isEmailVerified;
+    }
+
+    getCountry(): CountryEntity | undefined {
+        return this.country;
+    }
+
+    setCountry(c: CountryEntity): void {
+        this.country = c;
     }
 
     getIsEmailVerifie(): boolean {

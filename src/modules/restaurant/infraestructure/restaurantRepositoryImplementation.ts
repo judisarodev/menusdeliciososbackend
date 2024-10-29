@@ -5,6 +5,7 @@ import RestaurantTypeEntity from "../../restaurant_type/domain/restaurantTypeEnt
 import RestaurantEntity from "../domain/restaurantEntity";
 import RestaurantRepository from "../domain/restaurantRepository";
 import bcrypt from 'bcrypt';
+import CountryEntity from "../../country/domain/countryEntity";
 
 export default class RestaurantRepositoryImplementation implements RestaurantRepository{
     private models: any;
@@ -92,13 +93,19 @@ export default class RestaurantRepositoryImplementation implements RestaurantRep
             const restaurantTypeEntity = new RestaurantTypeEntity(
                 restaurant.restaurantType.name, 
                 restaurant.restaurantType.restaurantTypeId);
+
+            const countryEntity = new CountryEntity(
+                restaurant.country.name, 
+                restaurant.country.phoneCode, 
+                restaurant.country.countryId
+            );
     
+            restaurantEntity.setCountry(countryEntity);
             restaurantEntity.setRestaurantType(restaurantTypeEntity); 
             
-            console.log('restaurant.addresses', restaurant.addresses);
             if(restaurant.addresses){
                 const addresses = restaurant.addresses.map((address: any) => {
-                    return new AddressEntity(address.address, address.addressDetails, address.addressId);
+                    return new AddressEntity(address.address, address.details, address.addressId);
                 });
                 restaurantEntity.setAddresses(addresses);
             }
