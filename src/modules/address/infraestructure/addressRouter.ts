@@ -35,10 +35,10 @@ export default class AddressRouter implements RouterPattern {
             }
         });
 
-        this.router.patch('/update', authorizeRestaurant, async (req: any, res: any) => {
+        this.router.put('/update', authorizeRestaurant, async (req: any, res: any) => {
             try{
-                const { addressId, data } = req.body;
-                const wasUpdated = await this.updateAddressUseCase.execute(data, addressId);
+                const data = req.body;
+                const wasUpdated = await this.updateAddressUseCase.execute(data);
                 return res.status(200).json({ success: wasUpdated }); 
             }catch(error){
                 console.error(error);

@@ -24,8 +24,11 @@ export default class AddressRepositoryImplementation implements AddressRepositor
         }
         
     }
-    async update(data: any, addressId: number): Promise<boolean> {
-        const [wasUpdated] = await this.models.Address.update(data, { where: { addressId } });
+    async update(addressEntity: AddressEntity): Promise<boolean> {
+        const [wasUpdated] = await this.models.Address.update({
+            address: addressEntity.getAddress(),
+            details: addressEntity.getAddressDetails(),
+        }, { where: { addressId: addressEntity.getAddressId() } });
         return wasUpdated; 
     }
 }
