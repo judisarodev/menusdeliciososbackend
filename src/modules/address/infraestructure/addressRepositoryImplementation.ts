@@ -9,6 +9,15 @@ export default class AddressRepositoryImplementation implements AddressRepositor
         this.models = SequelizeSetUp.getModels();
     }
 
+    async delete(addressId: number): Promise<void> {
+        await this.models.Address.destroy({
+            where: {
+                addressId
+            },
+            force: true,
+        });
+    }
+
     async create(address: AddressEntity, restaurantId: number) {
         try{
             const createdAddress = await this.models.Address.create({
